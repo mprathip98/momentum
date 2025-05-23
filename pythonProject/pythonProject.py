@@ -80,7 +80,7 @@ def index() -> rx.Component:
     return rx.box(
         navbar(),
 
-        rx.color_mode.button(position="bottom-right"),
+        rx.color_mode.button(position="bottom-left"),
         rx.hstack(
             #rx.heading("*blank space for the animation*"),
             rx.box(
@@ -143,6 +143,7 @@ def index() -> rx.Component:
 
 
 
+
 #navbar with just the logo, routing to the home page
 def navbar_plain():
     return rx.box(
@@ -178,20 +179,25 @@ def navbar_plain():
     )
 
 #defining the table - an structure to store the sign up information user
-class userSignUpModel(rx.Model, table=True):
+class usersignupmodel(rx.Model, table=True):
     name: str
     username: str
     password: str
 
 #handling the signUp info
 class signUpState(rx.State):
-    form_data :dict = {}
 
-    @rx.event
-    def handle_submit(self, form_data: dict):
+    form_data :dict = {}
+    did_submit: bool = False
+    timeleft: int = 5
+
+    async def handle_submit(self, form_data: dict):
+        #alright just set up the database
+        #if you are reading this from the devlog, hi!
         print(form_data)
+        self.form_data = form_data
         with rx.session() as session:
-            db_entry = userSignUpModel(
+            db_entry = usersignupmodel(
                 **form_data
             )
             session.add(db_entry)
@@ -199,13 +205,11 @@ class signUpState(rx.State):
             self.did_submit = True
             yield
 
-
-
-
 def signUp() -> rx.Component:
 
     return rx.box(
         navbar_plain(),
+        rx.color_mode.button(position="bottom-left"),
         rx.card(
             rx.center(
                 rx.form(
@@ -279,6 +283,7 @@ def signUp() -> rx.Component:
                                 width="300px",
                                 size="3",
                                 margin="-2%",
+                                name="password",
                                 type="password",
                             ),
                             margin="2%",
@@ -308,9 +313,8 @@ def signUp() -> rx.Component:
                     ),
 
                     align="center",
-                    #on_submit=signUpState.handle_submit(),
-                    #reset_on_submit=True,
-
+                    on_submit=signUpState.handle_submit(),
+                    reset_on_submit=True,
                 ),
             ),
             width="35%",
@@ -319,22 +323,28 @@ def signUp() -> rx.Component:
             margin_left="32%"
 
         ),
-        align="center",
-        width="100%",
     )
 
 
 def signIn() -> rx.Component:
     return rx.box(
         navbar_plain(),
+        rx.color_mode.button(position="bottom-left"),
         rx.card(
             rx.center(
                 rx.vstack(
-                    rx.image(
-                        src="/momentumLogo.png",
-                        alt="Reflex Logo light",
-                        height="4em",
-                        margin_top="5%"
+                    rx.color_mode_cond(
+                        dark=rx.image(
+                            src="/momentumLogo.png",
+                            alt="Reflex Logo light",
+                            height="4em",
+                            margin_top="5%"),
+
+                        light=rx.image(
+                            src="/momentumLogoBlack.png",
+                            alt="Reflex Logo dark",
+                            height="4em",
+                            margin_top="5%"),
                     ),
                     rx.heading("Sign Back In", size="5", margin_bottom="20px", font="Oswald Bold"),
 
@@ -400,4 +410,4 @@ app = rx.App()
 app.add_page(index)
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
-
+#im using SQL Acehmy
