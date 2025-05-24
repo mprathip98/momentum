@@ -5,7 +5,10 @@ from reflex.components.radix.primitives.form import FormSubmit
 from rich.jupyter import display
 from sqlalchemy.exc import IntegrityError
 import asyncio
+import reflex_local_auth
 from rxconfig import config
+
+
 
 class State(rx.State):
     error_call: bool = False
@@ -44,7 +47,7 @@ def navbar():
                     ),
                     rx.button(
                         rx.link(
-                            "login", href="/login", underline="none",color=rx.color_mode_cond(light="black", dark="white"),),
+                            "login", href=reflex_local_auth.routes.LOGIN_ROUTE, underline="none",color=rx.color_mode_cond(light="black", dark="white"),),
                             size="3",
                             margin_right="40px",
                             color="black",
@@ -230,7 +233,6 @@ class signUpState(rx.State):
             yield
 
 
-
 def signUp() -> rx.Component:
 
     return rx.box(
@@ -330,7 +332,7 @@ def signUp() -> rx.Component:
                             "I already have an account tho...",
                             margin="3%",
                             margin_bottom="5%",
-                            href="/login",
+                            href=reflex_local_auth.routes.LOGIN_ROUTE,
                             width="100%",
                             text_align="center",
                         ),
@@ -360,67 +362,71 @@ def signIn() -> rx.Component:
         rx.color_mode.button(position="bottom-left"),
         rx.card(
             rx.center(
-                rx.vstack(
-                    #time for the logi
-                    rx.color_mode_cond(
-                        dark=rx.image(
-                            src="/momentumLogo.png",
-                            alt="Reflex Logo light",
-                            height="4em",
-                            margin_top="5%"),
 
-                        light=rx.image(
-                            src="/momentumLogoBlack.png",
-                            alt="Reflex Logo dark",
-                            height="4em",
-                            margin_top="5%"),
-                    ),
-                    rx.heading("Sign Back In", size="5", margin_bottom="20px", font="Oswald Bold"),
-
+                rx.form(
                     rx.vstack(
-                        rx.text("username", size="4"),
-                        rx.input(
-                            placeholder="bigManJohn",
-                            width="300px",
+                        rx.color_mode_cond(
+                            dark=rx.image(
+                                src="/momentumLogo.png",
+                                alt="Reflex Logo light",
+                                height="4em",
+                                margin_top="5%"),
+
+                            light=rx.image(
+                                src="/momentumLogoBlack.png",
+                                alt="Reflex Logo dark",
+                                height="4em",
+                                margin_top="5%"),
+                        ),
+                        rx.heading("Sign Back In", size="5", margin_bottom="20px", font="Oswald Bold"),
+
+                        rx.vstack(
+                            rx.text("username", size="4"),
+                            rx.input(
+                                placeholder="bigManJohn",
+                                name="username",
+                                width="300px",
+                                size="3",
+                                margin_top="-2%",
+                                margin_bottom="5%",
+                            ),
+                        ),
+                        rx.vstack(
+                            rx.text("password", size="4"),
+                            rx.input(
+                                type="password",
+                                name="password",
+                                width="300px",
+                                margin_top="-2%",
+                                margin_bottom="10%",
+                                size="3"
+                            ),
+                        ),
+
+                        rx.button(
+                            "Login",
+                            width="65%",
                             size="3",
-                            margin_top="-2%",
+                            align="center",
+                            font_weight="bold",
+                            font_size="1em",
+                            type="submit",
+
+                        ),
+                        rx.link(
+                            "I do not have an account tho...",
+                            href="/signUp",
+                            width="100%",
+                            text_align="center",
+                            margin_top="3%",
                             margin_bottom="5%",
                         ),
-                    ),
-                    rx.vstack(
-                        rx.text("password", size="4"),
-                        rx.input(
-                            type="password",
-                            width="300px",
-                            margin_top="-2%",
-                            margin_bottom="10%",
-                            size="3"
-                        ),
-                    ),
 
-                    rx.button(
-                        "Login",
-                        width="65%",
-                        size="3",
                         align="center",
-                        font_weight="bold",
-                        font_size="1em",
-                        type="submit",
-
-                    ),
-                    rx.link(
-                        "I do not have an account tho...",
-                        href="/signUp",
-                        width="100%",
-                        text_align="center",
-                        margin_top="3%",
-                        margin_bottom="5%",
+                        border_color="white",
                     ),
 
-                    align="center",
-                    border_color="white",
                 ),
-
             ),
             width="35%",
             justify="center",
@@ -435,8 +441,20 @@ def signIn() -> rx.Component:
 )
 
 
-
 app = rx.App()
+
+#reflex local auth pages
+#login page local authentication
+
+app.add_page(
+    reflex_local_auth.pages.login_page,
+    route=reflex_local_auth.routes.LOGIN_ROUTE,
+    title="Login",
+)
+
+#what does auth system mean
+
+#my program pages
 app.add_page(index)
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
