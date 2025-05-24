@@ -210,11 +210,11 @@ def signUp() -> rx.Component:
                                 margin_top="5%"),
                         ),
 
-                        rx.heading("Create an account", size="5", margin_bottom="20px"),
+                        rx.heading("Create an account", size="5"    ),
 
                         rx.vstack(
                             rx.text(
-                                "name *",
+                                "name",
                                 size="4",
                                 text_align="left",
                                 weight="medium",
@@ -227,13 +227,13 @@ def signUp() -> rx.Component:
                                 type="text",
                                 width="300px",
                                 size="3",
-                                margin="-2%"
+                                margin_top="-2%"
                             ),
-                            margin="2%",
+                            margin="1%",
                         ),
                         rx.vstack(
                             rx.text(
-                                "username *",
+                                "username",
                                 size="4",
                                 text_align="left",
                                 weight="medium",
@@ -246,14 +246,14 @@ def signUp() -> rx.Component:
                                 placeholder="bigManJohn",
                                 width="300px",
                                 size="3",
-                                margin="-2%"
+                                margin_top="-2%"
                             ),
-                            margin="2%",
+                            margin="1%",
                         ),
 
                         rx.vstack(
                             rx.text(
-                                "password *",
+                                "password",
                                 size="4",
                                 required=True,
                                 name="password",
@@ -264,18 +264,18 @@ def signUp() -> rx.Component:
                             rx.input(
                                 width="300px",
                                 size="3",
-                                margin="-2%",
+                                margin_top="-2%",
                                 name="password",
                                 type="password",
                             ),
-                            margin="2%",
+                            margin="1%",
                             margin_bottom="5%",
                         ),
                         rx.button(
                             "Create",
-                            width="35%",
+                            width="50%",
                             size="3",
-                            margin_left="-3%",
+                            margin_top="3%",
                             align="center",
                             font_weight="bold",
                             font_size="1em",
@@ -284,7 +284,6 @@ def signUp() -> rx.Component:
                         ),
                         rx.link(
                             "I already have an account tho...",
-                            margin="3%",
                             margin_bottom="5%",
                             href=reflex_local_auth.routes.LOGIN_ROUTE,
                             width="100%",
@@ -305,8 +304,11 @@ def signUp() -> rx.Component:
             width="35%",
             align="center",
             margin="2%",
-            margin_left="32%"
-
+            margin_left="32%",
+            border_color="white",
+            #trying to add a shadow to a card
+            #how can i add a neon box shadow to a rx.card on a black card
+            class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
         ),
     )
 
@@ -359,7 +361,7 @@ def signIn() -> rx.Component:
 
                         rx.button(
                             "Login",
-                            width="65%",
+                            width="50%",
                             size="3",
                             align="center",
                             font_weight="bold",
@@ -387,10 +389,12 @@ def signIn() -> rx.Component:
             justify="center",
             margin_top="5%",
             margin_left="32%",
+            class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
 
         ),
         align="center",
         width="100%",
+
 
 
 )
