@@ -9,6 +9,8 @@ import reflex_local_auth
 from rxconfig import config
 from pythonProject import pythonProject
 
+class State(rx.State):
+    user: dict = {}
 
 class signUpState(rx.State):
 
@@ -78,14 +80,17 @@ class signUpState(rx.State):
 
 class signInState(rx.State):
     in_session: bool = True
-
+#gello
     async def sign_in(self, form_data: dict):
         username = form_data.get("username", "")
         password = form_data.get("password", "")
         with rx.session() as session:
-            user = session.query(pythonProject.usersignupmodel1).filter_by(username=username, password=password).first()
-
-        if user:
+            #sends a query to filter the values in the table based on username and password
+            #the "first" function fetches the first result
+            State.user = session.query(pythonProject.usersignupmodel1).filter_by(username=username, password=password).first()
+            print(State.user)
+        #checks if there is something in user
+        if State.user:
             self.in_session = True
             yield rx.toast.success(
                 title="Login success",
