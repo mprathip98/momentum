@@ -4,29 +4,14 @@ import reflex as rx
 from pygments.styles.dracula import background
 from reflex.components.radix.primitives.form import FormSubmit
 from rich.jupyter import display
+from sqlalchemy.exc import IntegrityError
+
+import asyncio
 
 from rxconfig import config
 
-
 class State(rx.State):
-    @rx.event
-    def simulate_integrity_error(self):
-        try:
-            raise IntegrityError(
-                "Simulated IntegrityError: Duplicate entry"
-            )
-        except IntegrityError as e:
-            yield rx.toast(
-                f"Error: {e}",
-                duration=5000,
-                close_button=True,
-            )
-        except Exception as e:
-            yield rx.toast(
-                f"An unexpected error occurred: {e}",
-                duration=5000,
-                close_button=True,
-            )
+    error_call: bool = False
 
 #----------HOME PAGE------------------
 def navbar():
@@ -160,12 +145,6 @@ def index() -> rx.Component:
 #------------HOME PAGE----------------
 
 
-def alert():
-    return rx.box(
-        rx.heading("bro what is this")
-    )
-
-
 #navbar with just the logo, routing to the home page
 def navbar_plain():
     return rx.box(
@@ -206,13 +185,6 @@ class usersignupmodel1(rx.Model, table=True):
     username: str
     password: str
 
-class AlertDialogState2(rx.State):
-    opened: bool = False
-
-    @rx.event
-    def dialog_open(self):
-        self.opened = ~self.opened
-
 
 #handling the signUp info
 class signUpState(rx.State):
@@ -221,9 +193,9 @@ class signUpState(rx.State):
     did_submit: bool = False
     timeleft: int = 5
     error_message: str = ""
-
+    #
     async def handle_submit(self, form_data: dict):
-        #print(form_data)
+        print(form_data)
         try:
             self.form_data = form_data
             data = {}
@@ -242,10 +214,17 @@ class signUpState(rx.State):
                 print(session.commit())
                 self.did_submit = True
 
-                yield
-                self.did_submit = False
-        except Exception as e:
-            pass
+                yield rx.redirect("/login"),
+        except IntegrityError as e:
+            if "UNIQUE constraint" in str(e.orig):
+                yield rx.toast(
+                    title="Signup Error",
+                    description="Username already taken. Please choose another.",
+                    #status="error",
+                    duration=4000
+                )
+
+            yield
 
 
 def signUp() -> rx.Component:
@@ -341,6 +320,7 @@ def signUp() -> rx.Component:
                             font_weight="bold",
                             font_size="1em",
                             type="submit",
+                            #on_click=errorCheck,
                         ),
                         rx.link(
                             "I already have an account tho...",
@@ -357,6 +337,7 @@ def signUp() -> rx.Component:
 
                     align="center",
                     on_submit=signUpState.handle_submit(),
+
                     reset_on_submit=True,
                 ),
 
@@ -368,7 +349,6 @@ def signUp() -> rx.Component:
 
         ),
     )
-
 
 def signIn() -> rx.Component:
     return rx.box(
