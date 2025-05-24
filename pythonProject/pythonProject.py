@@ -1,13 +1,32 @@
+from sqlite3 import IntegrityError
+
 import reflex as rx
 from pygments.styles.dracula import background
 from reflex.components.radix.primitives.form import FormSubmit
+from rich.jupyter import display
 
 from rxconfig import config
 
 
 class State(rx.State):
-    pass
-
+    @rx.event
+    def simulate_integrity_error(self):
+        try:
+            raise IntegrityError(
+                "Simulated IntegrityError: Duplicate entry"
+            )
+        except IntegrityError as e:
+            yield rx.toast(
+                f"Error: {e}",
+                duration=5000,
+                close_button=True,
+            )
+        except Exception as e:
+            yield rx.toast(
+                f"An unexpected error occurred: {e}",
+                duration=5000,
+                close_button=True,
+            )
 
 #----------HOME PAGE------------------
 def navbar():
@@ -141,7 +160,10 @@ def index() -> rx.Component:
 #------------HOME PAGE----------------
 
 
-
+def alert():
+    return rx.box(
+        rx.heading("bro what is this")
+    )
 
 
 #navbar with just the logo, routing to the home page
@@ -179,10 +201,18 @@ def navbar_plain():
     )
 
 #defining the table - an structure to store the sign up information user
-class usersignupmodel(rx.Model, table=True):
+class usersignupmodel1(rx.Model, table=True):
     name: str
     username: str
     password: str
+
+class AlertDialogState2(rx.State):
+    opened: bool = False
+
+    @rx.event
+    def dialog_open(self):
+        self.opened = ~self.opened
+
 
 #handling the signUp info
 class signUpState(rx.State):
@@ -190,20 +220,33 @@ class signUpState(rx.State):
     form_data :dict = {}
     did_submit: bool = False
     timeleft: int = 5
+    error_message: str = ""
 
     async def handle_submit(self, form_data: dict):
-        #alright just set up the database
-        #if you are reading this from the devlog, hi!
-        print(form_data)
-        self.form_data = form_data
-        with rx.session() as session:
-            db_entry = usersignupmodel(
-                **form_data
-            )
-            session.add(db_entry)
-            session.commit()
-            self.did_submit = True
-            yield
+        #print(form_data)
+        try:
+            self.form_data = form_data
+            data = {}
+            for k, v in form_data.items():
+                if v == "" or v is None:
+                    continue
+                data[k] = v
+
+            print(data)
+            with rx.session() as session:
+                #try to check before creating a sign up pag
+                db_entry = usersignupmodel1(
+                    **form_data
+                )
+                session.add(db_entry)
+                print(session.commit())
+                self.did_submit = True
+
+                yield
+                self.did_submit = False
+        except Exception as e:
+            pass
+
 
 def signUp() -> rx.Component:
 
@@ -316,6 +359,7 @@ def signUp() -> rx.Component:
                     on_submit=signUpState.handle_submit(),
                     reset_on_submit=True,
                 ),
+
             ),
             width="35%",
             align="center",
@@ -410,4 +454,3 @@ app = rx.App()
 app.add_page(index)
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
-#im using SQL Acehmy
