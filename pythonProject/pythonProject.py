@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import asyncio
 import reflex_local_auth
 from rxconfig import config
+from pythonProject import authStates
 
 
 
@@ -181,56 +182,9 @@ def navbar_plain():
 
 #defining the table - an structure to store the sign up information user
 class usersignupmodel1(rx.Model, table=True):
-    name: str
-    username: str
-    password: str
-
-
-#handling the signUp info
-class signUpState(rx.State):
-
-    form_data :dict = {}
-    did_submit: bool = False
-    timeleft: int = 5
-    error_message: str = ""
-    #
-    async def handle_submit(self, form_data: dict):
-        #print(form_data)
-        try:
-            self.form_data = form_data
-            data = {}
-            for k, v in form_data.items():
-                if v == "" or v is None:
-                    continue
-                data[k] = v
-
-            #print(data)
-            with rx.session() as session:
-                #try to check before creating a sign up pag
-                db_entry = usersignupmodel1(
-                    **form_data
-                )
-                session.add(db_entry)
-                session.commit()
-            self.did_submit = True
-            yield rx.toast(
-                    title="Signup Success!",
-                    description="Redirecting to Login",
-                    duration=4000
-            )
-            #redirecting to login
-            yield rx.redirect("/login")
-
-        except IntegrityError as e:
-            #excepts integrity errors and displays a message at the bottom right
-            if "UNIQUE constraint" in str(e.orig):
-                yield rx.toast(
-                    title="Signup Error",
-                    description="Username already taken. Please choose another.",
-                    #status="error",
-                    duration=4000
-                )
-            yield
+     name: str
+     username: str
+     password: str
 
 
 def signUp() -> rx.Component:
@@ -315,11 +269,11 @@ def signUp() -> rx.Component:
                                 type="password",
                             ),
                             margin="2%",
-                            margin_bottom="10%",
+                            margin_bottom="5%",
                         ),
                         rx.button(
                             "Create",
-                            width="30%",
+                            width="35%",
                             size="3",
                             margin_left="-3%",
                             align="center",
@@ -342,7 +296,7 @@ def signUp() -> rx.Component:
                     ),
 
                     align="center",
-                    on_submit=signUpState.handle_submit,
+                    on_submit=authStates.signUpState.handle_submit,
 
                     reset_on_submit=True,
                 ),
@@ -425,7 +379,8 @@ def signIn() -> rx.Component:
                         align="center",
                         border_color="white",
                     ),
-
+                    on_submit=authStates.signInState.sign_in,
+                    reset_on_submit=True,
                 ),
             ),
             width="35%",
