@@ -1,13 +1,10 @@
 from sqlite3 import IntegrityError
-
 import reflex as rx
 from pygments.styles.dracula import background
 from reflex.components.radix.primitives.form import FormSubmit
 from rich.jupyter import display
 from sqlalchemy.exc import IntegrityError
-
 import asyncio
-
 from rxconfig import config
 
 class State(rx.State):
@@ -195,7 +192,7 @@ class signUpState(rx.State):
     error_message: str = ""
     #
     async def handle_submit(self, form_data: dict):
-        print(form_data)
+        #print(form_data)
         try:
             self.form_data = form_data
             data = {}
@@ -204,18 +201,25 @@ class signUpState(rx.State):
                     continue
                 data[k] = v
 
-            print(data)
+            #print(data)
             with rx.session() as session:
                 #try to check before creating a sign up pag
                 db_entry = usersignupmodel1(
                     **form_data
                 )
                 session.add(db_entry)
-                print(session.commit())
-                self.did_submit = True
+                session.commit()
+            self.did_submit = True
+            yield rx.toast(
+                    title="Signup Success!",
+                    description="Redirecting to Login",
+                    duration=4000
+            )
+            #redirecting to login
+            yield rx.redirect("/login")
 
-                yield rx.redirect("/login"),
         except IntegrityError as e:
+            #excepts integrity errors and displays a message at the bottom right
             if "UNIQUE constraint" in str(e.orig):
                 yield rx.toast(
                     title="Signup Error",
@@ -223,8 +227,8 @@ class signUpState(rx.State):
                     #status="error",
                     duration=4000
                 )
-
             yield
+
 
 
 def signUp() -> rx.Component:
@@ -336,7 +340,7 @@ def signUp() -> rx.Component:
                     ),
 
                     align="center",
-                    on_submit=signUpState.handle_submit(),
+                    on_submit=signUpState.handle_submit,
 
                     reset_on_submit=True,
                 ),
@@ -357,6 +361,7 @@ def signIn() -> rx.Component:
         rx.card(
             rx.center(
                 rx.vstack(
+                    #time for the logi
                     rx.color_mode_cond(
                         dark=rx.image(
                             src="/momentumLogo.png",
@@ -428,6 +433,7 @@ def signIn() -> rx.Component:
 
 
 )
+
 
 
 app = rx.App()
