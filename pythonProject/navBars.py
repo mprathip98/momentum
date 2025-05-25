@@ -201,6 +201,8 @@ def viewsNavbar():
                         color="skyblue"),
                 ),
                 rx.hstack(
+                    #str = rx.cond()
+
                     rx.cond(
 
                         authStates.signInState.valid_username != "",
@@ -211,8 +213,10 @@ def viewsNavbar():
                             margin_right="45px"),
                     ),
                     justify="end",
-                ),
 
+
+                ),
+                #
 
                 justify="between",
                 align="center"

@@ -131,7 +131,6 @@ def add() -> rx.Component:
 def track() -> rx.Component:
     return rx.box()
 
-
 #pages initialization
 app = rx.App()
 

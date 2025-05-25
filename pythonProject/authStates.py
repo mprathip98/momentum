@@ -5,6 +5,9 @@ from pythonProject import databaseTables
 from pythonProject import navBars
 from pythonProject import pythonProject
 import bcrypt
+from pythonProject import globalVariable
+
+
 
 class signUpState(rx.State):
 
@@ -19,6 +22,7 @@ class signUpState(rx.State):
 
         try:
             self.form_data = form_data
+
             data = {}
             for k, v in form_data.items():
 
@@ -32,8 +36,6 @@ class signUpState(rx.State):
 
            #print(data)
             if valid and validPassword:
-                hashed_password = bcrypt.hashpw(form_data["password"].encode("utf-8"), bcrypt.gensalt())
-                form_data["password"] = hashed_password.decode("utf-8")
                 with rx.session() as session:
                     #try to check before creating a sign up pag
                     db_entry = databaseTables.usersignupmodel1(
@@ -94,6 +96,7 @@ class signInState(rx.State):
         if user:
             self.valid_username=user.username
             self.valid_name=user.name
+            globalVariable.current_username = user.username
             self.in_session = True
             yield rx.toast.success(
                 title="Login success",

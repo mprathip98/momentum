@@ -5,6 +5,7 @@ from pythonProject import databaseTables
 from pythonProject import navBars
 from pythonProject import authStates
 from pythonProject import pythonProject
+from pythonProject import addState
 
 
 
@@ -236,7 +237,7 @@ def addCard():
                             width="100%"
                         ),
                         rx.input(
-                            name="name",
+                            name="habit_Name",
                             required=True,
                             placeholder="workout for two hours",
                             type="text",
@@ -256,7 +257,7 @@ def addCard():
                         ),
                         rx.text_area(
                             type="text",
-                            name="username",
+                            name="description",
                             required=True,
                             placeholder="brief description",
                             width="300px",
@@ -264,27 +265,26 @@ def addCard():
                             margin_top="-2%"
                         ),
                         margin="1%",
-                    ),
+                    ), #is a text_area also considered an input in python reflex's form
 
                     rx.button(
                         "Add",
                         width="50%",
                         size="3",
-                        margin_top="5%",
+                        margin_top="6%",
+                        margin_bottom="5%",
                         align="center",
                         font_weight="bold",
                         font_size="1em",
                         type="submit",
                         # on_click=errorCheck,
                     ),
-
-                    align="center",
                     border_color="white",
+                    align="center",
                 ),
 
                 align="center",
-                on_submit=authStates.signUpState.handle_submit,
-
+                on_submit=addState.AddState.handle_submit,
                 reset_on_submit=True,
             ),
 
