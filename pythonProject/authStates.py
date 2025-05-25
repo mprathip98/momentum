@@ -47,7 +47,8 @@ class signUpState(rx.State):
                 yield rx.toast.success(
                         title="Signup Success!",
                         description="Redirecting to Login",
-                        duration=4000
+                        duration=4000,
+                        position="top-right"
                 )
                 #redirecting to login
                 yield rx.redirect("/login")
@@ -55,13 +56,15 @@ class signUpState(rx.State):
                 yield rx.toast.error(
                     title="Password Error",
                     description="password has to be at least 8 characters long",
-                    duration=4000
+                    duration=4000,
+                    position="top-left"
                 )
             else:
                 yield rx.toast.error(
                     title="Signup Error",
                     description="fill in ALL of the inputs",
-                    duration=4000
+                    duration=4000,
+                    position="top-left"
                 )
 
         except IntegrityError as e:
@@ -71,7 +74,8 @@ class signUpState(rx.State):
                     title="Signup Error",
                     description="Username already taken. Please choose another.",
                     #status="error",
-                    duration=4000
+                    duration=4000,
+                    position="top-left"
                 )
             yield
 
@@ -99,11 +103,11 @@ class signInState(rx.State):
             globalVariable.current_username = user.username
             self.in_session = True
             yield rx.toast.success(
-                title="Login success",
+                title="Login success", position="top-right"
             )
             yield rx.redirect("/dashboard")
         else:
             self.in_session = False
             yield rx.toast.error(
-                "Invalid username or password"
+                "Invalid username or password", position="top-left"
             )
