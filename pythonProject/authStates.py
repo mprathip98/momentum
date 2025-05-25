@@ -1,16 +1,13 @@
 from sqlite3 import IntegrityError
 import reflex as rx
-from pygments.styles.dracula import background
-from reflex.components.radix.primitives.form import FormSubmit
-from rich.jupyter import display
 from sqlalchemy.exc import IntegrityError
-import asyncio
-import reflex_local_auth
-from rxconfig import config
+from pythonProject import databaseTables
+from pythonProject import navBars
+from pythonProject import authStates
 from pythonProject import pythonProject
 
-class State(rx.State):
-    user: dict = {}
+class MyState(rx.State):
+    user_info: str = ""
 
 class signUpState(rx.State):
 
@@ -40,7 +37,7 @@ class signUpState(rx.State):
             if valid and validPassword:
                 with rx.session() as session:
                     #try to check before creating a sign up pag
-                    db_entry = pythonProject.usersignupmodel1(
+                    db_entry = databaseTables.usersignupmodel1(
                         **form_data
                     )
                     session.add(db_entry)
@@ -80,23 +77,28 @@ class signUpState(rx.State):
 
 class signInState(rx.State):
     in_session: bool = True
+    user_info: dict = {}
+    new_username: str = ""
+
 #gello
     async def sign_in(self, form_data: dict):
+        global new_username
         username = form_data.get("username", "")
         password = form_data.get("password", "")
         with rx.session() as session:
             #sends a query to filter the values in the table based on username and password
             #the "first" function fetches the first result
-            State.user = session.query(pythonProject.usersignupmodel1).filter_by(username=username, password=password).first()
-            print(State.user)
-        #checks if there is something in user
-        if State.user:
+            user = session.query(databaseTables.usersignupmodel1).filter_by(username=username, password=password).first()
+
+        if user:
+            self.new_username=user.username
             self.in_session = True
             yield rx.toast.success(
                 title="Login success",
             )
-            yield rx.redirect("/")
+            yield rx.redirect("/dashboard")
         else:
+
             self.in_session = False
             yield rx.toast.error(
                 "Invalid username or password"
