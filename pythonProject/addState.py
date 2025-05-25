@@ -1,5 +1,5 @@
 import reflex as rx
-from pythonProject import cards
+from pythonProject import authCards
 from pythonProject import databaseTables
 from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError

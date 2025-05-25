@@ -4,9 +4,10 @@ import reflex_local_auth
 from rxconfig import config
 from pythonProject import databaseTables
 from pythonProject import authStates
-from pythonProject import cards
+from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
+from pythonProject import trackCards
 
 class State(rx.State):
     pass
@@ -73,21 +74,21 @@ def signUp() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
-        cards.signUpCard()
+        authCards.signUpCard()
     )
 
 def signIn() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
-        cards.loginCard(),
+        authCards.loginCard(),
         align="center",
         width="100%",
     )
 
 def dashboard() -> rx.Component:
     return rx.box(
-        navBars.dashboardNavbar(),
+        navBars.viewsNavbar(),
         rx.color_mode.button(position="bottom-left"),
         rx.link(
             rx.card(
@@ -125,13 +126,16 @@ def add() -> rx.Component:
     return rx.box(
         navBars.viewsNavbar(),
         rx.color_mode.button(position="bottom-left"),
-        cards.addCard(),
+        trackCards.addCard(),
     )
 
 def track() -> rx.Component:
-    return rx.box()
+    return rx.box(
+        navBars.viewsNavbar(),
 
-#pages initialization
+    )
+
+
 app = rx.App()
 
 #reflex local auth pages

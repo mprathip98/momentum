@@ -1,7 +1,7 @@
 import reflex as rx
 from pythonProject import databaseTables
 from pythonProject import authStates
-from pythonProject import cards
+from pythonProject import authCards
 from pythonProject import navBars
 
 #defining the table - an structure to store the sign up information user
@@ -15,3 +15,9 @@ class Habit(rx.Model, table=True):
      habit_Name: str
      username: str
      description: str
+
+class habitLog(rx.model, table=True):
+     username: str
+     habit_Name: str
+     date: str
+     status: bool
