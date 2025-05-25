@@ -4,7 +4,7 @@ import reflex_local_auth
 from rxconfig import config
 from pythonProject import databaseTables
 from pythonProject import authStates
-from pythonProject import authCards
+from pythonProject import cards
 from pythonProject import navBars
 from pythonProject import animations
 
@@ -73,14 +73,14 @@ def signUp() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
-        authCards.signUpCard()
+        cards.signUpCard()
     )
 
 def signIn() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
-        authCards.loginCard(),
+        cards.loginCard(),
         align="center",
         width="100%",
     )
@@ -100,7 +100,6 @@ def dashboard() -> rx.Component:
                         margin_left="25%"
 
                     ),
-
                     dark=rx.image(
                         src="/lightPlus.png",
                         width="50%",
@@ -118,13 +117,16 @@ def dashboard() -> rx.Component:
                 align_center="center",
             ),
             underline="none",
-            href="/add"
-
+            href="/add",
         )
     )
 
 def add() -> rx.Component:
-    return rx.box()
+    return rx.box(
+        navBars.viewsNavbar(),
+        rx.color_mode.button(position="bottom-left"),
+        cards.addCard(),
+    )
 
 def track() -> rx.Component:
     return rx.box()
@@ -139,6 +141,7 @@ app.add_page(
     route=reflex_local_auth.routes.LOGIN_ROUTE,
     title="Login",
 )
+
 #my program pages
 app.add_page(index)
 app.add_page(add, route="/add")

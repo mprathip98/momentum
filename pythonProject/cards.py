@@ -205,3 +205,99 @@ def loginCard():
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
 
     ),
+
+def addCard():
+    return rx.card(
+        rx.center(
+            rx.form(
+                rx.vstack(
+                    rx.color_mode_cond(
+                        dark=rx.image(
+                            src="/momentumLogo.png",
+                            alt="Reflex Logo light",
+                            height="4em",
+                            ),
+
+                        light=rx.image(
+                            src="/momentumLogoBlack.png",
+                            alt="Reflex Logo dark",
+                            height="4em",
+                            ),
+                    ),
+
+                    rx.heading("Add a new habit", size="5"),
+
+                    rx.vstack(
+                        rx.text(
+                            "habit name",
+                            size="4",
+                            text_align="left",
+                            weight="medium",
+                            width="100%"
+                        ),
+                        rx.input(
+                            name="name",
+                            required=True,
+                            placeholder="workout for two hours",
+                            type="text",
+                            width="300px",
+                            size="3",
+                            margin_top="-2%"
+                        ),
+                        margin="8%",
+                    ),
+                    rx.vstack(
+                        rx.text(
+                            "description",
+                            size="4",
+                            text_align="left",
+                            weight="medium",
+                            width="100%"
+                        ),
+                        rx.text_area(
+                            type="text",
+                            name="username",
+                            required=True,
+                            placeholder="brief description",
+                            width="300px",
+                            size="3",
+                            margin_top="-2%"
+                        ),
+                        margin="1%",
+                    ),
+
+                    rx.button(
+                        "Add",
+                        width="50%",
+                        size="3",
+                        margin_top="5%",
+                        align="center",
+                        font_weight="bold",
+                        font_size="1em",
+                        type="submit",
+                        # on_click=errorCheck,
+                    ),
+
+                    align="center",
+                    border_color="white",
+                ),
+
+                align="center",
+                on_submit=authStates.signUpState.handle_submit,
+
+                reset_on_submit=True,
+            ),
+
+        ),
+        width="35%",
+        align="center",
+        margin="2%",
+        margin_left="32%",
+        margin_top="5%",
+        border_color="white",
+        # trying to add a shadow to a card
+        # how can i add a neon box shadow to a rx.card on a black card
+        class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+    ),
+
+

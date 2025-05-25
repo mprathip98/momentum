@@ -3,7 +3,6 @@ import reflex as rx
 from sqlalchemy.exc import IntegrityError
 from pythonProject import databaseTables
 from pythonProject import navBars
-from pythonProject import authStates
 from pythonProject import pythonProject
 import bcrypt
 
