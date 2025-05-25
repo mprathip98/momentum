@@ -156,7 +156,6 @@ def dashboardNavbar():
         ),
         background_color=rx.color_mode_cond(light="black", dark="white"),
         padding="1em",
-        position="fixed",
         width="100%",
 
     )

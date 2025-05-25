@@ -88,9 +88,46 @@ def signIn() -> rx.Component:
 def dashboard() -> rx.Component:
     return rx.box(
         navBars.dashboardNavbar(),
+        rx.color_mode.button(position="bottom-left"),
+        rx.link(
+            rx.card(
+                rx.color_mode_cond(
+                    light=rx.image(
+                        src="/darkPlus.png",
+                        width="50%",
+                        margin_top="13%",
+                        margin_bottom="10%",
+                        margin_left="25%"
 
+                    ),
+
+                    dark=rx.image(
+                        src="/lightPlus.png",
+                        width="50%",
+                        margin_top="13%",
+                        margin_bottom="10%",
+                        margin_left="25%"
+                    )
+
+                ),
+                rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%", color=rx.color_mode_cond(light="black", dark="white")),
+                class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+                margin="5%",
+                width="20%",
+                align="center",
+                align_center="center",
+            ),
+            underline="none",
+            href="/add"
+
+        )
     )
 
+def add() -> rx.Component:
+    return rx.box()
+
+def track() -> rx.Component:
+    return rx.box()
 
 
 #pages initialization
@@ -104,6 +141,8 @@ app.add_page(
 )
 #my program pages
 app.add_page(index)
+app.add_page(add, route="/add")
+app.add_page(track, route="/track")
 app.add_page(dashboard, route="/dashboard")
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
