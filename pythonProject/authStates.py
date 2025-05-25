@@ -5,9 +5,7 @@ from pythonProject import databaseTables
 from pythonProject import navBars
 from pythonProject import authStates
 from pythonProject import pythonProject
-
-class MyState(rx.State):
-    user_info: str = ""
+import bcrypt
 
 class signUpState(rx.State):
 
@@ -19,7 +17,7 @@ class signUpState(rx.State):
     async def handle_submit(self, form_data: dict):
         valid: bool = True
         validPassword: bool = True
-        #print(form_data)
+
         try:
             self.form_data = form_data
             data = {}
@@ -35,6 +33,8 @@ class signUpState(rx.State):
 
            #print(data)
             if valid and validPassword:
+                hashed_password = bcrypt.hashpw(form_data["password"].encode("utf-8"), bcrypt.gensalt())
+                form_data["password"] = hashed_password.decode("utf-8")
                 with rx.session() as session:
                     #try to check before creating a sign up pag
                     db_entry = databaseTables.usersignupmodel1(
@@ -78,11 +78,13 @@ class signUpState(rx.State):
 class signInState(rx.State):
     in_session: bool = True
     user_info: dict = {}
-    new_username: str = ""
+    valid_username: str = ""
+    valid_name: str = ""
 
 #gello
     async def sign_in(self, form_data: dict):
-        global new_username
+        global valid_username
+        global valid_name
         username = form_data.get("username", "")
         password = form_data.get("password", "")
         with rx.session() as session:
@@ -91,14 +93,14 @@ class signInState(rx.State):
             user = session.query(databaseTables.usersignupmodel1).filter_by(username=username, password=password).first()
 
         if user:
-            self.new_username=user.username
+            self.valid_username=user.username
+            self.valid_name=user.name
             self.in_session = True
             yield rx.toast.success(
                 title="Login success",
             )
             yield rx.redirect("/dashboard")
         else:
-
             self.in_session = False
             yield rx.toast.error(
                 "Invalid username or password"

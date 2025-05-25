@@ -118,12 +118,38 @@ def dashboardNavbar():
                     ),
                 ),
                 rx.hstack(
-                    rx.text(
-                        #f"{authStates.State.user["name"]}",
+                    rx.link(
+                        "Track",
+                        href="/",
+                        underline="none",
+                        size="6",
+                        weight="medium",
+                        color="skyblue",
+                        margin_right="25px",
+                    )
+                    ,
+                    rx.link(
+                        "Add",
+                        href="/",
+                        weight="medium",
+                        underline="none",
+                        size="6",
+                        color="skyblue"),
+                ),
+                rx.hstack(
+                    rx.cond(
+
+                        authStates.signInState.valid_username != "",
+                        rx.text(
+                            f"Welcome, {authStates.signInState.valid_name}!",
+                            color="skyblue", size="6",
+                            weight="bold",
+                            margin_right="45px"),
                     ),
-                    spacing="4",
                     justify="end",
                 ),
+
+
                 justify="between",
                 align="center"
             ),

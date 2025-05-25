@@ -6,21 +6,10 @@ from pythonProject import databaseTables
 from pythonProject import authStates
 from pythonProject import authCards
 from pythonProject import navBars
-signInState1 = authStates.signInState
+from pythonProject import animations
 
 class State(rx.State):
     pass
-
-#-----Spline Setup----------
-class Spline(rx.Component):
-    library = "@splinetool/react-spline"
-    lib_dependencies: list[str] = ["@splinetool/runtime@1.5.5"]
-    tag = "Spline"
-    is_default = True
-    scene: rx.Var[str]
-spline = Spline.create
-#link for the animation on Spline
-scene = "https://prod.spline.design/WgCVJEkCUF1CFaaP/scene.splinecode"
 
 #------------HOME PAGE----------------
 def index() -> rx.Component:
@@ -31,7 +20,7 @@ def index() -> rx.Component:
         rx.hstack(
             #rx.heading("*blank space for the animation*"),
             rx.box(
-                spline(scene=scene),
+                animations.spline(scene=animations.scene),
                 width="520px",
                 height="500px",
                 margin_top="-4%"
@@ -100,13 +89,7 @@ def dashboard() -> rx.Component:
     return rx.box(
         navBars.dashboardNavbar(),
 
-        # rx.cond(
-        #     authStates.State.user_info.get("username") != "",
-        #     rx.text("No user logged in")
-        # )
     )
-
-
 
 
 
