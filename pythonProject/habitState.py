@@ -46,3 +46,8 @@ class AddState(rx.State):
                     duration=4000,
                     position="top-left"
                 )
+
+class habitLog(rx.State):
+    form_data: dict = {}
+    async def handle_submit(self, form_data: dict):
+        pass

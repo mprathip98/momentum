@@ -7,7 +7,7 @@ from pythonProject import authStates
 from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
-from pythonProject import trackCards
+from pythonProject import habitCards
 
 class State(rx.State):
     pass
@@ -130,14 +130,14 @@ def add() -> rx.Component:
     return rx.box(
         navBars.viewsNavbar(),
         rx.color_mode.button(position="bottom-left"),
-        trackCards.addCard(),
+        habitCards.addCard(),
     )
 
 def track() -> rx.Component:
     return rx.box(
         rx.color_mode.button(position="bottom-left"),
         navBars.viewsNavbar(),
-        trackCards.trackCard(),
+        habitCards.trackCard(),
     )
 
 

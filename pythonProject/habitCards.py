@@ -1,9 +1,9 @@
 import reflex as rx
 from pythonProject import globalVariable
 from pythonProject import databaseTables
-from pythonProject import addState
+from pythonProject import habitState
 
-from pythonProject import addState
+from pythonProject import habitState
 
 class State(rx.State):
     local_username: str = ""
@@ -85,7 +85,7 @@ def addCard():
                 ),
 
                 align="center",
-                on_submit=addState.AddState.handle_submit,
+                on_submit=habitState.AddState.handle_submit,
                 reset_on_submit=True,
             ),
 
@@ -243,7 +243,7 @@ def trackCard():
                 ),
 
                 align="center",
-                on_submit=addState.AddState.handle_submit,
+                on_submit=habitState.habitLog.handle_submit,
                 reset_on_submit=True,
             ),
 
