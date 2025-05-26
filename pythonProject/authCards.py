@@ -101,7 +101,7 @@ def signUpCard():
                     rx.link(
                         "I already have an account tho...",
                         margin_bottom="5%",
-                        href=reflex_local_auth.routes.LOGIN_ROUTE,
+                        href="/login",
                         width="100%",
                         text_align="center",
                     ),
@@ -204,4 +204,3 @@ def loginCard():
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
 
     ),
-

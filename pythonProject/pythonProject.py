@@ -144,11 +144,6 @@ def track() -> rx.Component:
 app = rx.App()
 
 #reflex local auth pages
-app.add_page(
-    reflex_local_auth.pages.login_page,
-    route=reflex_local_auth.routes.LOGIN_ROUTE,
-    title="Login",
-)
 
 #my program pages
 app.add_page(index)

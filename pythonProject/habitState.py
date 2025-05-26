@@ -66,6 +66,3 @@ class habitLog(rx.State):
             )
             session.add(db_entry)
             session.commit()
-
-
-

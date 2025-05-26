@@ -40,7 +40,7 @@ def navbar():
                     ),
                     rx.button(
                         rx.link(
-                            "login", href=reflex_local_auth.routes.LOGIN_ROUTE, underline="none",color=rx.color_mode_cond(light="black", dark="white"),),
+                            "login", href="/login", underline="none",color=rx.color_mode_cond(light="black", dark="white"),),
                             size="3",
                             margin_right="40px",
                             color="black",
