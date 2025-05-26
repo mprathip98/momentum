@@ -49,5 +49,23 @@ class AddState(rx.State):
 
 class habitLog(rx.State):
     form_data: dict = {}
+
     async def handle_submit(self, form_data: dict):
-        pass
+        for k, v in form_data.items():
+            if k == "status":
+                print(v)
+                if v == "crushed it":
+                    form_data['status'] = True
+                else:
+                    form_data['status'] = False
+        form_data["username"] = globalVariable.current_username
+        print(form_data)
+        with rx.session() as session:
+            db_entry = databaseTables.habitLog(
+                **form_data
+            )
+            session.add(db_entry)
+            session.commit()
+
+
+
