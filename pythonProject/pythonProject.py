@@ -90,8 +90,8 @@ def dashboard() -> rx.Component:
     return rx.box(
         navBars.viewsNavbar(),
         rx.color_mode.button(position="bottom-left"),
-        rx.link(
-            rx.card(
+        rx.card(
+            rx.link(
                 rx.color_mode_cond(
                     light=rx.image(
                         src="/darkPlus.png",
@@ -110,16 +110,20 @@ def dashboard() -> rx.Component:
                     )
 
                 ),
-                rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%", color=rx.color_mode_cond(light="black", dark="white")),
-                class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-                margin="5%",
-                width="20%",
-                align="center",
-                align_center="center",
+                rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%",
+                        color=rx.color_mode_cond(light="black", dark="white")),
+                href="/add"
+
             ),
-            underline="none",
-            href="/add",
-        )
+            class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+            margin="5%",
+            width="20%",
+            align="center",
+            align_center="center",
+
+        ),
+
+
     )
 
 def add() -> rx.Component:
@@ -131,8 +135,9 @@ def add() -> rx.Component:
 
 def track() -> rx.Component:
     return rx.box(
+        rx.color_mode.button(position="bottom-left"),
         navBars.viewsNavbar(),
-
+        trackCards.trackCard(),
     )
 
 

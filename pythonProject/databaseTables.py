@@ -1,5 +1,4 @@
 import reflex as rx
-from pythonProject import databaseTables
 from pythonProject import authStates
 from pythonProject import authCards
 from pythonProject import navBars
@@ -16,7 +15,7 @@ class Habit(rx.Model, table=True):
      username: str
      description: str
 
-class habitLog(rx.model, table=True):
+class habitLog(rx.Model, table=True):
      username: str
      habit_Name: str
      date: str
