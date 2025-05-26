@@ -1,9 +1,12 @@
-from idlelib.configdialog import font_sample_text
-
 import reflex as rx
-from pygments.styles.dracula import background
+from pythonProject import globalVariable
+from pythonProject import databaseTables
+from pythonProject import addState
 
 from pythonProject import addState
+
+class State(rx.State):
+    local_username: str = ""
 
 def addCard():
     return rx.card(
@@ -98,7 +101,9 @@ def addCard():
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
     ),
 
+
 def trackCard():
+
     return rx.card(
 
         rx.center(
@@ -118,6 +123,7 @@ def trackCard():
                             ),
                     ),
 
+
                     rx.heading("Track your habit", size="5"),
 
                     rx.hstack(
@@ -133,10 +139,11 @@ def trackCard():
                                     width="100%",
                                     margin_bottom="-2%"
 
-
                                 ),
+
+
                                 rx.select(
-                                    ["habits", "habit2"],
+                                    globalVariable.TrackState.habits,
                                     name="habit_Name",
                                     required=True,
                                     placeholder="select habit",
@@ -163,7 +170,6 @@ def trackCard():
                                     margin_top="-2%",
                                 ),
                                 margin_top="2%",
-
                             ),
                             margin="5%",
                         ),
@@ -248,7 +254,6 @@ def trackCard():
         margin_left="17.5%",
         margin_top="5%",
         border_color="white",
-        # trying to add a shadow to a card
-        # how can i add a neon box shadow to a rx.card on a black card
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+        on_mount=globalVariable.TrackState.load_habits,
     ),

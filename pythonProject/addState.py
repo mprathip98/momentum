@@ -16,15 +16,15 @@ class AddState(rx.State):
     async def handle_submit(self, form_data: dict):
         try:
             State.loggedInUsername = globalVariable.current_username
+            print(State.loggedInUsername)
             form_data['username'] = State.loggedInUsername
             data={}
+
             for k,v in form_data.items():
                 if v=="" or v==None:
                     yield rx.toast.warning(title="FILL ALL OF THE INPUTS", position="top-left")
                 else:
                     data[k]=v
-
-
             with rx.session() as session:
                 db_entry = databaseTables.Habit(
                     **data

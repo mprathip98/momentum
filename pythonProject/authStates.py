@@ -101,6 +101,7 @@ class signInState(rx.State):
             self.valid_username=user.username
             self.valid_name=user.name
             globalVariable.current_username = user.username
+            globalVariable.TrackState.username = user.username
             self.in_session = True
             yield rx.toast.success(
                 title="Login success", position="top-right"
