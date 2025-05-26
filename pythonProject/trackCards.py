@@ -147,23 +147,23 @@ def trackCard():
                             ),
                             rx.vstack(
                                 rx.text(
-                                    "when is this log for",
+                                    "when is this log for?",
                                     size="4",
                                     text_align="left",
                                     weight="medium",
                                     width="100%"
                                 ),
 
-                                rx.input(
-                                    type="text",
+                                rx.el.input(
+                                    type="date",
                                     name="date",
                                     required=True,
-                                    placeholder="yyyy-mm-dd",
                                     width="300px",
-                                    size="3",
-                                    margin_top="-2%"
+                                    class_name=" px-3 py-2 border rounded-md  sm:text-sm",
+                                    margin_top="-2%",
                                 ),
-                                #margin="1%",
+                                margin_top="2%",
+
                             ),
                             margin="5%",
                         ),
@@ -180,18 +180,20 @@ def trackCard():
                                     width="100%",
                                     margin_top="-2%"
                                 ),
-                                rx.input(
-                                    type="text",
+                                rx.select(
+                                    ["crushed it", "not today"],
                                     name="status",
                                     required=True,
-                                    placeholder="brief description",
                                     width="300px",
                                     size="3",
-                                    margin_top="-2%"
+                                    placeholder="select status",
+                                    margin_top="-2%",
+                                    border_color="white",
+                                    border = "2px"
                                 ),
                                 margin="1%",
                             ),
-                            #
+
                             rx.vstack(
                                 rx.text(
                                     "so, how did it go?",
@@ -216,6 +218,7 @@ def trackCard():
                         margin_right="20%",
 
                     ),
+
 
 
                     rx.button(
