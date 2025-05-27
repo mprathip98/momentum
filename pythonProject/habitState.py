@@ -1,6 +1,6 @@
 import reflex as rx
 from pythonProject import authCards
-from pythonProject import databaseTables
+from pythonProject import models
 from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError
 from pythonProject import navBars
@@ -26,9 +26,8 @@ class AddState(rx.State):
                 else:
                     data[k]=v
             with rx.session() as session:
-                db_entry = databaseTables.Habit(
+                db_entry = models.Habit(
                     **data
-
                 )
                 session.add(db_entry)
                 session.commit()
@@ -51,18 +50,31 @@ class habitLog(rx.State):
     form_data: dict = {}
 
     async def handle_submit(self, form_data: dict):
-        for k, v in form_data.items():
-            if k == "status":
-                print(v)
-                if v == "crushed it":
-                    form_data['status'] = True
-                else:
-                    form_data['status'] = False
-        form_data["username"] = globalVariable.current_username
-        print(form_data)
-        with rx.session() as session:
-            db_entry = databaseTables.habitLog(
-                **form_data
-            )
-            session.add(db_entry)
-            session.commit()
+        try:
+            for k, v in form_data.items():
+                if k == "status":
+                    print(v)
+                    if v == "crushed it":
+                        form_data['status'] = True
+                    else:
+                        form_data['status'] = False
+            form_data["username"] = globalVariable.current_username
+            with rx.session() as session:
+                db_entry = models.habitLog(
+                    **form_data
+                )
+                session.add(db_entry)
+                session.commit()
+            yield rx.toast.success(title="Log Created!")
+            yield rx.redirect("/dashboard")
+            
+        except IntegrityError as e:
+            #excepts integrity errors and displays a message at the bottom right
+            if "UNIQUE constraint" in str(e.orig):
+                yield rx.toast.warning(
+                    title="",
+                    description="You already created a log for this day",
+                    #status="error",
+                    duration=4000,
+                    position="top-left"
+                )

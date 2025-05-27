@@ -1,5 +1,5 @@
 from pythonProject import habitState
-from pythonProject import databaseTables
+from pythonProject import models
 import reflex as rx
 
 
@@ -10,7 +10,7 @@ class TrackState(rx.State):
     username: str = ""  # Populate this on login
 
     async def load_habits(self):
-        from pythonProject.databaseTables import Habit
+        from pythonProject.models import Habit
         with rx.session() as session:
             results = session.query(Habit).filter_by(username=current_username).all()
             self.habits = [habit.habit_Name for habit in results]

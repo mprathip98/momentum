@@ -2,7 +2,7 @@ from string import whitespace
 
 import reflex as rx
 import reflex_local_auth
-from pythonProject import databaseTables
+from pythonProject import models
 from pythonProject import authStates
 from pythonProject import authCards
 from pythonProject import navBars

@@ -1,15 +1,11 @@
 import reflex as rx
-import asyncio
-import reflex_local_auth
-from rxconfig import config
-from pythonProject import databaseTables
-from pythonProject import authStates
 from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
 from pythonProject import habitCards
 from dotenv import load_dotenv
 load_dotenv()
+
 
 class State(rx.State):
     pass
@@ -69,8 +65,7 @@ def index() -> rx.Component:
         border_color="white",
         height="600px",
     )
-s
-s
+
 #Authenication pages
 def signUp() -> rx.Component:
     return rx.box(
@@ -78,6 +73,7 @@ def signUp() -> rx.Component:
         rx.color_mode.button(position="bottom-left"),
         authCards.signUpCard()
     )
+#time to record a vid
 
 def signIn() -> rx.Component:
     return rx.box(

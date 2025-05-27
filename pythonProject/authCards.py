@@ -1,7 +1,7 @@
 import reflex as rx
 import reflex_local_auth
 from reflex.components.radix.primitives.form import FormSubmit
-from pythonProject import databaseTables
+from pythonProject import models
 from pythonProject import navBars
 from pythonProject import authStates
 
