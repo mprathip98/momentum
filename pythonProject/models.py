@@ -1,6 +1,8 @@
 import reflex as rx
 from sqlmodel import Field
 import sqlalchemy
+from dotenv import load_dotenv
+load_dotenv()
 
 #defining the table - an structure to store the sign up information user
 class usersignupmodel1(rx.Model, table=True):

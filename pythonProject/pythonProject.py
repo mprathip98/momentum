@@ -6,9 +6,34 @@ from pythonProject import habitCards
 from dotenv import load_dotenv
 load_dotenv()
 
+from pythonProject.debug_state import DebugState  # or from your state module
+
+import os
+import reflex as rx
 
 class State(rx.State):
-    pass
+    @classmethod
+    def get_db_url(self):
+        import os
+        return os.getenv("DATABASE_URL") or "None"
+
+def debug_page():
+    db_url = State.get_db_url()  # get string once here
+    return rx.box(
+        rx.heading("Database URL at runtime:"),
+        rx.text(db_url),  # pass string here
+        padding="2rem",
+        border="1px solid gray",
+        border_radius="md",
+        max_width="600px",
+        margin="2rem auto"
+    )
+
+
+# Register your existing states here, plus add DebugState:
+#
+# class State(rx.State):
+#     pass
 
 #------------HOME PAGE----------------
 def index() -> rx.Component:
@@ -144,7 +169,6 @@ def track() -> rx.Component:
 
 app = rx.App()
 
-#reflex local auth pages
 
 #my program pages
 app.add_page(index)
@@ -153,3 +177,8 @@ app.add_page(track, route="/track")
 app.add_page(dashboard, route="/dashboard")
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
+
+#app.add_state(DebugState)
+
+# Register your existing pages here, plus add debug_page:
+app.add_page(debug_page, route="/debug")
