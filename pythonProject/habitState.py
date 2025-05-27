@@ -24,9 +24,9 @@ class AddState(rx.State):
             data={}
             with rx.session() as session:
                 habits = session.query(Habit).filter_by(username=State.loggedInUsername, habit_Name=form_data["habit_Name"]).all()
-                print(habits)
-            if habits != []:
-                validHabitName = False
+
+            validHabitName = False if habits != [] else True
+
             if validHabitName:
                 for k,v in form_data.items():
                     if v=="" or v==None:
@@ -46,6 +46,7 @@ class AddState(rx.State):
                     yield rx.redirect("/track")
             elif not validHabitName:
                 yield rx.toast.warning(title="Habit Already Exists", position="top-left")
+
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
             if "UNIQUE constraint" in str(e.orig):
@@ -57,27 +58,41 @@ class AddState(rx.State):
                     position="top-left"
                 )
 
+
+
 class habitLog(rx.State):
     form_data: dict = {}
 
     async def handle_submit(self, form_data: dict):
+        validLog = True
         try:
             for k, v in form_data.items():
                 if k == "status":
-                    print(v)
                     if v == "crushed it":
                         form_data['status'] = True
                     else:
                         form_data['status'] = False
             form_data["username"] = globalVariable.current_username
+
             with rx.session() as session:
-                db_entry = models.habitLog(
-                    **form_data
-                )
-                session.add(db_entry)
-                session.commit()
-            yield rx.toast.success(title="Log Created!")
-            yield rx.redirect("/dashboard")
+                logs = session.query(models.habitLog).filter_by(username=form_data["username"], date=form_data["date"], habit_Name=form_data["habit_Name"]).all()
+
+            validLog = False if logs != [] else True
+
+            if validLog:
+                with rx.session() as session:
+                    db_entry = models.habitLog(
+                        **form_data
+                    )
+                    session.add(db_entry)
+                    session.commit()
+                yield rx.toast.success(title="Log Created!")
+                yield rx.redirect("/dashboard")
+
+            elif not validLog:
+                yield rx.toast.warning("You already created a log for this date!")
+
+
             
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
