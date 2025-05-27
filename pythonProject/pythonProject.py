@@ -8,6 +8,8 @@ from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
 from pythonProject import habitCards
+from dotenv import load_dotenv
+load_dotenv()
 
 class State(rx.State):
     pass
@@ -67,8 +69,8 @@ def index() -> rx.Component:
         border_color="white",
         height="600px",
     )
-
-
+s
+s
 #Authenication pages
 def signUp() -> rx.Component:
     return rx.box(
@@ -85,6 +87,9 @@ def signIn() -> rx.Component:
         align="center",
         width="100%",
     )
+
+
+
 
 def dashboard() -> rx.Component:
     return rx.box(

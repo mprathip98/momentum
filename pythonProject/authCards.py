@@ -202,5 +202,4 @@ def loginCard():
         margin_top="5%",
         margin_left="32%",
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-
     ),
