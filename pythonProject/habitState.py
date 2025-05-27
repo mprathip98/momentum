@@ -78,3 +78,4 @@ class habitLog(rx.State):
                     duration=4000,
                     position="top-left"
                 )
+
