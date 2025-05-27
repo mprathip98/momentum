@@ -4,6 +4,8 @@ from pythonProject import models
 from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError
 from pythonProject import navBars
+from pythonProject.models import Habit
+
 
 class State(rx.State):
     loggedInUsername: str = ""
@@ -12,29 +14,38 @@ class AddState(rx.State):
     form_data: dict = {}
     did_submit: str = False
 
-
     async def handle_submit(self, form_data: dict):
+        validHabitName = True
         try:
             State.loggedInUsername = globalVariable.current_username
             print(State.loggedInUsername)
             form_data['username'] = State.loggedInUsername
-            data={}
 
-            for k,v in form_data.items():
-                if v=="" or v==None:
-                    yield rx.toast.warning(title="FILL ALL OF THE INPUTS", position="top-left")
-                else:
-                    data[k]=v
+            data={}
             with rx.session() as session:
-                db_entry = models.Habit(
-                    **data
-                )
-                session.add(db_entry)
-                session.commit()
-                yield rx.toast.success(title="Habit Created!",
-                                       description="You are a step closer to achieving you goal!",
-                                       position="top-right")
-                yield rx.redirect("/track")
+                habits = session.query(Habit).filter_by(username=State.loggedInUsername, habit_Name=form_data["habit_Name"]).all()
+                print(habits)
+            if habits != []:
+                validHabitName = False
+            if validHabitName:
+                for k,v in form_data.items():
+                    if v=="" or v==None:
+                        yield rx.toast.warning(title="FILL ALL OF THE INPUTS", position="top-left")
+                    else:
+                        data[k]=v
+                with rx.session() as session:
+                    db_entry = models.Habit(
+                        **data
+                    )
+                    #testing time
+                    session.add(db_entry)
+                    session.commit()
+                    yield rx.toast.success(title="Habit Created!",
+                                           description="You are a step closer to achieving you goal!",
+                                           position="top-right")
+                    yield rx.redirect("/track")
+            elif not validHabitName:
+                yield rx.toast.warning(title="Habit Already Exists", position="top-left")
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
             if "UNIQUE constraint" in str(e.orig):
