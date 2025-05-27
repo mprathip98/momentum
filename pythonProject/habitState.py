@@ -92,8 +92,6 @@ class habitLog(rx.State):
             elif not validLog:
                 yield rx.toast.warning("You already created a log for this date!")
 
-
-            
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
             if "UNIQUE constraint" in str(e.orig):
