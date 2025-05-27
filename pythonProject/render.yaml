@@ -1,12 +1,10 @@
 services:
   - type: web
-    name: reflex-app
+    name: my-reflex-app
     env: python
-    plan: free
-    buildCommand: reflex init && reflex db init && reflex export
-    startCommand: reflex run --env prod
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    autoDeploy: true
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
+      - fromDatabase:
           name: reflex-db
-          property: connectionString
