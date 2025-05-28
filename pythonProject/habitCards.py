@@ -143,6 +143,7 @@ def trackCard():
 
 
                                 rx.select(
+
                                     globalVariable.TrackState.habits,
                                     name="habit_Name",
                                     required=True,

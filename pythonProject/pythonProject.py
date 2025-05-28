@@ -95,11 +95,12 @@ def signIn() -> rx.Component:
     )
 
 
-
 def dashboard() -> rx.Component:
     from pythonProject import dashboardState
     return rx.box(
         navBars.viewsNavbar(),
+        globalVariable.load(),
+
 
         rx.color_mode.button(position="bottom-left"),
         rx.card(
@@ -128,11 +129,6 @@ def dashboard() -> rx.Component:
                 href="/add"
 
             ),
-
-            #only loads properly after going to the track page
-            rx.text(f"habits from the main page: {globalVariable.TrackState.habits}"),
-
-
             class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
             margin="5%",
             width="20%",
@@ -141,6 +137,7 @@ def dashboard() -> rx.Component:
         ),
 
     )
+
 
 def add() -> rx.Component:
     return rx.box(

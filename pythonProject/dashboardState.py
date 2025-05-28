@@ -1,16 +1,11 @@
 import reflex as rx
+from pythonProject import globalVariable
+from pythonProject import models
 
 
+class HabitState(rx.State):
+    habits: list[str] = []
 
-class dashboard(rx.State):
-    habits=""
-    async def dashSetter(self):
-        global habits
-        from pythonProject import globalVariable
-        from pythonProject import models
-        loggedInUsername = globalVariable.current_username
+    def load_habits(self):
         with rx.session() as session:
-            habits = session.query(models.Habit).filter_by(username=loggedInUsername).all()
-            print(habits)
-def dashboardSetter():
-    print(dashboard.habits)
+            self.habits = session.query(models.Habit).filter_by(username=globalVariable.current_username).all()
