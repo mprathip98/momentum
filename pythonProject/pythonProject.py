@@ -6,6 +6,8 @@ from pythonProject import navBars
 from pythonProject import animations
 from pythonProject import habitCards
 from pythonProject import globalVariable
+from pythonProject import dashboardState
+from pythonProject import models
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -94,13 +96,36 @@ def signIn() -> rx.Component:
         width="100%",
     )
 
+#no it has to reload whenever
 
+class HabitState(rx.State):
+    loaded = False
+    habits: list[str] = []
+    habitsText = "Your habits are: "
+
+    def load_habits(self):
+        self.loaded = True
+        with rx.session() as session:
+            results = session.query(models.Habit).filter_by(username=globalVariable.current_username).all()
+            self.habits = [habit.habit_Name for habit in results]
+            for items in self.habits:
+                self.habitsText += "\n" + items + ","
+
+
+#the class is called when the page is actually visible to the
+@rx.page(on_load=dashboardState.HabitState.load_habits)
 def dashboard() -> rx.Component:
-    from pythonProject import dashboardState
+    #from pythonProject import dashboardState
     return rx.box(
         navBars.viewsNavbar(),
-        globalVariable.load(),
 
+
+        rx.cond(
+            dashboardState.HabitState.loaded,
+            rx.text(dashboardState.HabitState.habitsText),
+        ),
+
+#hwo can i cause a page to be reloaded in python reflex
 
         rx.color_mode.button(position="bottom-left"),
         rx.card(
@@ -138,6 +163,7 @@ def dashboard() -> rx.Component:
 
     )
 
+#is it possible to load elements when the page is actually opened instead of when it is loaded
 
 def add() -> rx.Component:
     return rx.box(
@@ -166,3 +192,4 @@ app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
 
 #app.add_state(DebugState)
+

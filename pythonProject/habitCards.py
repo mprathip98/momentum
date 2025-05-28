@@ -256,5 +256,5 @@ def trackCard():
         margin_top="5%",
         border_color="white",
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-        on_mount=globalVariable.TrackState.load_habits,
+        #on_mount=globalVariable.TrackState.load_habits,
     ),
