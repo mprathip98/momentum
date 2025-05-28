@@ -6,8 +6,7 @@ from pythonProject import navBars
 from pythonProject import pythonProject
 import bcrypt
 from pythonProject import globalVariable
-from pythonProject.models import usersignupmodel1
-from pythonProject.database import SessionLocal  # or wherever your sessionmaker is defined
+from pythonProject.models import usersignupmodel1 # or wherever your sessionmaker is defined
 
 
 
@@ -50,7 +49,6 @@ class signUpState(rx.State):
                     )
 
                     # ✅ Use your custom session
-                    session = SessionLocal()
                     session.add(db_entry)
                     session.commit()
                     session.close()
@@ -79,9 +77,9 @@ class signUpState(rx.State):
                     position="top-left"
                 )
 
-        except:
+        except Exception as e:
             #excepts integrity errors and displays a message at the bottom right
-
+            print(e)
             yield rx.toast.error(
                 title="Signup Error",
                 description="Username already taken. Please choose another.",

@@ -1,11 +1,7 @@
 import reflex as rx
-from decouple import config
-
-# Get your DATABASE_URL from environment variables
-DATABASE_URL = config("DATABASE_URL")
 
 config = rx.Config(
     app_name="pythonProject",
-    db_url=DATABASE_URL,
+    db_url="postgresql://neondb_owner:npg_1ByUSnGcax9q@ep-withered-tooth-aabnsi1r-pooler.westus3.azure.neon.tech/neondb?sslmode=require",
     plugins=[rx.plugins.TailwindV3Plugin()]
 )
