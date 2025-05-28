@@ -14,5 +14,3 @@ class HabitState(rx.State):
             self.habitsText = "Your habits are: "
             results = session.query(models.Habit).filter_by(username=globalVariable.current_username).all()
             self.habits = [habit.habit_Name for habit in results]
-            for items in self.habits:
-                self.habitsText += "\n" + items + ","

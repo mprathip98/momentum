@@ -96,21 +96,42 @@ def signIn() -> rx.Component:
         width="100%",
     )
 
-#no it has to reload whenever
 
-class HabitState(rx.State):
-    loaded = False
-    habits: list[str] = []
-    habitsText = "Your habits are: "
+#-------------------------------------------------------------------------
+def descriptionSetter(habitName):
+    x = habitName
+    print("x is ",x)
+    print("habitName is ",habitName)
+    with rx.session() as session:
+         habitValues = session.query(models.Habit).filter_by(username=globalVariable.current_username, habit_Name=habitName).first()
+    return rx.text(f"{habitValues['description']}")
 
-    def load_habits(self):
-        self.loaded = True
-        with rx.session() as session:
-            results = session.query(models.Habit).filter_by(username=globalVariable.current_username).all()
-            self.habits = [habit.habit_Name for habit in results]
-            for items in self.habits:
-                self.habitsText += "\n" + items + ","
 
+def eachCard(habit: str):
+    print("habit = ", habit)
+    return rx.card(
+        rx.text(
+            habit,
+            size = "5",
+            weight = "bold",
+            text_align = "center",
+            width = "100%",
+            margin_bottom = "5%",
+            margin_top = "5%",
+            color = rx.color_mode_cond(light="black", dark="white")
+
+        ),
+        rx.text(descriptionSetter(habit)),
+
+        class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+        margin="5%",
+        width="20%",
+        align="center",
+        text_align="center",
+    )
+
+#
+#------------------------------------------------------------------------------------
 
 #the class is called when the page is actually visible to the
 @rx.page(on_load=dashboardState.HabitState.load_habits)
@@ -120,14 +141,8 @@ def dashboard() -> rx.Component:
         navBars.viewsNavbar(),
 
 
-        rx.cond(
-            dashboardState.HabitState.loaded,
-            rx.text(dashboardState.HabitState.habitsText),
-        ),
-
-#hwo can i cause a page to be reloaded in python reflex
-
         rx.color_mode.button(position="bottom-left"),
+
         rx.card(
             rx.link(
                 rx.color_mode_cond(
@@ -160,6 +175,13 @@ def dashboard() -> rx.Component:
             align="center",
             align_center="center",
         ),
+
+        rx.cond(
+            dashboardState.HabitState.loaded,
+            rx.foreach(dashboardState.HabitState.habits, eachCard),
+        ),
+
+
 
     )
 
