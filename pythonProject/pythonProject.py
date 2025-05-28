@@ -1,8 +1,12 @@
 import reflex as rx
+from sqlalchemy.util import preload_module
+
 from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
 from pythonProject import habitCards
+from pythonProject import globalVariable
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -79,7 +83,7 @@ def signUp() -> rx.Component:
         rx.color_mode.button(position="bottom-left"),
         authCards.signUpCard()
     )
-#time to record a vid
+
 
 def signIn() -> rx.Component:
     return rx.box(
@@ -92,10 +96,11 @@ def signIn() -> rx.Component:
 
 
 
-
 def dashboard() -> rx.Component:
+    from pythonProject import dashboardState
     return rx.box(
         navBars.viewsNavbar(),
+
         rx.color_mode.button(position="bottom-left"),
         rx.card(
             rx.link(
@@ -119,17 +124,21 @@ def dashboard() -> rx.Component:
                 ),
                 rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%",
                         color=rx.color_mode_cond(light="black", dark="white")),
+
                 href="/add"
 
             ),
+
+            #only loads properly after going to the track page
+            rx.text(f"habits from the main page: {globalVariable.TrackState.habits}"),
+
+
             class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
             margin="5%",
             width="20%",
             align="center",
             align_center="center",
-
         ),
-
 
     )
 

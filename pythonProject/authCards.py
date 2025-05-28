@@ -6,7 +6,6 @@ from pythonProject import navBars
 from pythonProject import authStates
 
 
-
 def signUpCard():
     return rx.card(
         rx.center(
@@ -194,6 +193,7 @@ def loginCard():
                     border_color="white",
                 ),
                 on_submit=authStates.signInState.sign_in,
+
                 reset_on_submit=True,
             ),
         ),

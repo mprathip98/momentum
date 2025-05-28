@@ -1,7 +1,7 @@
-from pythonProject import habitState
-from pythonProject import models
+
 import reflex as rx
 
+loggedIn = False
 
 
 current_username = ""

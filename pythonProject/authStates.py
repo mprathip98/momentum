@@ -117,6 +117,8 @@ class signInState(rx.State):
                 title="Login success", position="top-right"
             )
             yield rx.redirect("/dashboard")
+            globalVariable.loggedIn = True
+            #print(globalVariable.TrackState.habits if globalVariable.current_username != "" else []),
         else:
             self.in_session = False
             yield rx.toast.error(
