@@ -107,7 +107,6 @@ def dashboard() -> rx.Component:
         ),
     )
 
-
 #--------------start track pages------------------------
 def add() -> rx.Component:
     return rx.box(
