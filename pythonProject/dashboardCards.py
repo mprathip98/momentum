@@ -4,7 +4,17 @@ from pythonProject import models
 
 class State(rx.State):
     habit_name: str = ""
+    analysis_result: str = ""
+    show_dialog: bool = False
 
+    def analyze(self, habit_name):
+        self.habit_name = habit_name
+        with rx.session() as session:
+            habits = session.query(models.habitLog).filter_by(
+                habit_Name=habit_name,
+                username=globalVariable.current_username
+            ).all()
+        self.analysis_result = habit_name
 
 def addCard():
     return rx.card(
@@ -40,20 +50,11 @@ def addCard():
         align_center="center",
     ),
 
-def analysis(habit):
-    pass
-    # with rx.session() as session:
-    #     habits = session.query(models.habitLog).filter_by(habit_Name=habit, username=globalVariable.current_username).all()
-
-
 def eachCard(habit: dict):
     parts = habit.split("-")
-    habit_name = rx.cond(
-        parts.length() > 0, parts[0], ""
-    )
+    habit_name = rx.cond(parts.length() > 0, parts[0], "")
     description = rx.cond(parts.length() > 1, parts[1], "")
-
-
+    State.habit_name = habit
 
     return rx.card(
         rx.text(
@@ -63,27 +64,27 @@ def eachCard(habit: dict):
             text_align = "center",
             width = "100%",
             color = rx.color_mode_cond(light="black", dark="white"),
-            white_space  = "-",
             margin_bottom="5%",
         ),
 
         rx.text(description, margin_top = "2%", margin_bottom = "5%"),
-        # i am trying to access the database with
+
         rx.alert_dialog.root(
             rx.alert_dialog.trigger(
                 rx.button(
                     "Click to Analyze",
                     margin_top = "25%",
                     border_radius = "5px",
+                    on_click=lambda: State.analyze(habit_name=habit_name)
                 ),
             ),
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {habit_name}"),
-                rx.alert_dialog.description(analysis(habit_name)),
+                rx.alert_dialog.description(
+                    rx.text(State.analysis_result)
+                ),
             ),
         ),
-
-
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
         margin="5%",
         width="20%",
@@ -91,3 +92,4 @@ def eachCard(habit: dict):
         text_align="center",
         padding="3%",
     )
+
