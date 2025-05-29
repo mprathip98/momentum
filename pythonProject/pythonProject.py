@@ -1,3 +1,5 @@
+from string import whitespace
+
 import reflex as rx
 from sqlalchemy.util import preload_module
 
@@ -107,23 +109,40 @@ def descriptionSetter(habitName):
 
 
 def eachCard(habit: dict):
-    print("habit = ", habit)
+    parts = habit.split("-")
+    habit_name = rx.cond(
+        parts.length() > 0, parts[0], "Unnamed Habit"
+    )
+    description = rx.cond(parts.length() > 1, parts[1], "")
     return rx.card(
         rx.text(
-            habit,
+            habit_name,
             size = "5",
             weight = "bold",
             text_align = "center",
             width = "100%",
-            height = "200px",
-            margin_bottom = "5%",
-            margin_top = "5%",
             color = rx.color_mode_cond(light="black", dark="white"),
+            white_space  = "-",
+            margin_bottom="5%",
+        ),
 
+        rx.text(description, margin_top = "2%", margin_bottom = "5%"),
+        rx.alert_dialog.root(
+            rx.alert_dialog.trigger(
+                rx.button(
+                    "Click to Analyze",
+                    margin_top = "25%")
+            ),
+            rx.alert_dialog.content(
+                rx.alert_dialog.title("Analysis"),
+                rx.alert_dialog.description(
+                    #please just tell me how i can add a line between text in the same string wi
+                ),
+            ),
+            #margin_top="5%",
 
         ),
-        rx.button("Click to Analyze"),
-        #rx.text(description),
+
 
 
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
@@ -131,10 +150,9 @@ def eachCard(habit: dict):
         width="20%",
         align="center",
         text_align="center",
+        padding="3%",
     )
 
-#
-#------------------------------------------------------------------------------------
 
 #the class is called when the page is actually visible to the
 @rx.page(on_load=dashboardState.HabitState.load_habits)
