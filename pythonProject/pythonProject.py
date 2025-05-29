@@ -96,7 +96,6 @@ def signIn() -> rx.Component:
         width="100%",
     )
 
-
 #-------------------------------------------------------------------------
 def descriptionSetter(habitName):
     x = habitName
@@ -107,7 +106,7 @@ def descriptionSetter(habitName):
     return rx.text(f"{habitValues['description']}")
 
 
-def eachCard(habit: str):
+def eachCard(habit: dict):
     print("habit = ", habit)
     return rx.card(
         rx.text(
@@ -116,12 +115,16 @@ def eachCard(habit: str):
             weight = "bold",
             text_align = "center",
             width = "100%",
+            height = "200px",
             margin_bottom = "5%",
             margin_top = "5%",
-            color = rx.color_mode_cond(light="black", dark="white")
+            color = rx.color_mode_cond(light="black", dark="white"),
+
 
         ),
-        rx.text(descriptionSetter(habit)),
+        rx.button("Click to Analyze"),
+        #rx.text(description),
+
 
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
         margin="5%",
@@ -180,8 +183,6 @@ def dashboard() -> rx.Component:
             dashboardState.HabitState.loaded,
             rx.foreach(dashboardState.HabitState.habits, eachCard),
         ),
-
-
 
     )
 
