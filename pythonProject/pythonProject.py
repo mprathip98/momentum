@@ -10,19 +10,10 @@ from pythonProject import habitCards
 from pythonProject import globalVariable
 from pythonProject import dashboardState
 from pythonProject import models
+from pythonProject import dashboardCards
 
 from dotenv import load_dotenv
 load_dotenv()
-
-class State(rx.State):
-    pass
-
-
-
-# Register your existing states here, plus add DebugState:
-#
-# class State(rx.State):
-#     pass
 
 #------------HOME PAGE----------------
 def index() -> rx.Component:
@@ -79,15 +70,16 @@ def index() -> rx.Component:
         border_color="white",
         height="600px",
     )
+#-----------end home page
 
-#Authenication pages
+
+#---------start Authenication pages------------------------
 def signUp() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
         authCards.signUpCard()
     )
-
 
 def signIn() -> rx.Component:
     return rx.box(
@@ -97,61 +89,8 @@ def signIn() -> rx.Component:
         align="center",
         width="100%",
     )
+#----------------end auth pages---------------------------------------------------------
 
-#-------------------------------------------------------------------------
-def descriptionSetter(habitName):
-    x = habitName
-    print("x is ",x)
-    print("habitName is ",habitName)
-    with rx.session() as session:
-         habitValues = session.query(models.Habit).filter_by(username=globalVariable.current_username, habit_Name=habitName).first()
-    return rx.text(f"{habitValues['description']}")
-
-
-def eachCard(habit: dict):
-    parts = habit.split("-")
-    habit_name = rx.cond(
-        parts.length() > 0, parts[0], "Unnamed Habit"
-    )
-    description = rx.cond(parts.length() > 1, parts[1], "")
-    return rx.card(
-        rx.text(
-            habit_name,
-            size = "5",
-            weight = "bold",
-            text_align = "center",
-            width = "100%",
-            color = rx.color_mode_cond(light="black", dark="white"),
-            white_space  = "-",
-            margin_bottom="5%",
-        ),
-
-        rx.text(description, margin_top = "2%", margin_bottom = "5%"),
-        rx.alert_dialog.root(
-            rx.alert_dialog.trigger(
-                rx.button(
-                    "Click to Analyze",
-                    margin_top = "25%")
-            ),
-            rx.alert_dialog.content(
-                rx.alert_dialog.title("Analysis"),
-                rx.alert_dialog.description(
-                    #please just tell me how i can add a line between text in the same string wi
-                ),
-            ),
-            #margin_top="5%",
-
-        ),
-
-
-
-        class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-        margin="5%",
-        width="20%",
-        align="center",
-        text_align="center",
-        padding="3%",
-    )
 
 
 #the class is called when the page is actually visible to the
@@ -160,52 +99,16 @@ def dashboard() -> rx.Component:
     #from pythonProject import dashboardState
     return rx.box(
         navBars.viewsNavbar(),
-
-
+        dashboardCards.addCard(),
         rx.color_mode.button(position="bottom-left"),
-
-        rx.card(
-            rx.link(
-                rx.color_mode_cond(
-                    light=rx.image(
-                        src="/darkPlus.png",
-                        width="50%",
-                        margin_top="13%",
-                        margin_bottom="10%",
-                        margin_left="25%"
-
-                    ),
-                    dark=rx.image(
-                        src="/lightPlus.png",
-                        width="50%",
-                        margin_top="13%",
-                        margin_bottom="10%",
-                        margin_left="25%"
-                    )
-
-                ),
-                rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%",
-                        color=rx.color_mode_cond(light="black", dark="white")),
-
-                href="/add"
-
-            ),
-            class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-            margin="5%",
-            width="20%",
-            align="center",
-            align_center="center",
-        ),
-
         rx.cond(
             dashboardState.HabitState.loaded,
-            rx.foreach(dashboardState.HabitState.habits, eachCard),
+            rx.foreach(dashboardState.HabitState.habits, dashboardCards.eachCard),
         ),
-
     )
 
-#is it possible to load elements when the page is actually opened instead of when it is loaded
 
+#--------------start track pages------------------------
 def add() -> rx.Component:
     return rx.box(
         navBars.viewsNavbar(),
@@ -219,11 +122,9 @@ def track() -> rx.Component:
         navBars.viewsNavbar(),
         habitCards.trackCard(),
     )
-
+#----------------end trackpages-------------------------------
 
 app = rx.App()
-
-
 #my program pages
 app.add_page(index)
 app.add_page(add, route="/add")
@@ -231,6 +132,3 @@ app.add_page(track, route="/track")
 app.add_page(dashboard, route="/dashboard")
 app.add_page(signUp, route="/signUp")
 app.add_page(signIn, route="/login")
-
-#app.add_state(DebugState)
-
