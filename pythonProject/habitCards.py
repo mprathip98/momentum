@@ -140,10 +140,7 @@ def trackCard():
                                     margin_bottom="-2%"
 
                                 ),
-
-
                                 rx.select(
-
                                     globalVariable.TrackState.habits,
                                     name="habit_Name",
                                     required=True,

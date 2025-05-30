@@ -11,7 +11,7 @@ class HabitState(rx.State):
         self.loaded = True
         with rx.session() as session:
             self.habits = []
-            results = session.query(models.Habit).filter_by(username=globalVariable.current_username).all()
+            results = session.query(models.habit).filter_by(username=globalVariable.current_username).all()
             for items in results:
                 combinedText = f"{items.habit_Name} - {items.description}"
                 self.habits.append(combinedText)

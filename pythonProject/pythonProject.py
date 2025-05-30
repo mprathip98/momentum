@@ -92,11 +92,9 @@ def signIn() -> rx.Component:
 #----------------end auth pages---------------------------------------------------------
 
 
-
 #the class is called when the page is actually visible to the
 @rx.page(on_load=dashboardState.HabitState.load_habits)
 def dashboard() -> rx.Component:
-    #from pythonProject import dashboardState
     return rx.box(
         navBars.viewsNavbar(),
         dashboardCards.addCard(),
@@ -106,6 +104,7 @@ def dashboard() -> rx.Component:
             rx.foreach(dashboardState.HabitState.habits, dashboardCards.eachCard),
         ),
     )
+
 
 #--------------start track pages------------------------
 def add() -> rx.Component:

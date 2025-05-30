@@ -4,7 +4,7 @@ from pythonProject import models
 from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError
 from pythonProject import navBars
-from pythonProject.models import Habit
+from pythonProject.models import habit
 
 
 class State(rx.State):
@@ -23,7 +23,7 @@ class AddState(rx.State):
 
             data={}
             with rx.session() as session:
-                habits = session.query(Habit).filter_by(username=State.loggedInUsername, habit_Name=form_data["habit_Name"]).all()
+                habits = session.query(habit).filter_by(username=State.loggedInUsername, habit_Name=form_data["habit_Name"]).all()
 
             validHabitName = False if habits != [] else True
 

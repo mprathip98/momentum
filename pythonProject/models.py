@@ -23,7 +23,7 @@ class usersignupmodel1(rx.Model, table=True):
 
 
 #need to create a new table for the habits added
-class Habit(rx.Model, table=True):
+class habit(rx.Model, table=True):
      habit_Name: str = Field(
           sa_type=sqlalchemy.String,
           nullable=False,
@@ -37,7 +37,7 @@ class Habit(rx.Model, table=True):
           nullable=False,
      )
 
-class habitLog(rx.Model, table=True):
+class habitlog(rx.Model, table=True):
      username: str = Field(
           sa_type=sqlalchemy.String,
           nullable=False,
