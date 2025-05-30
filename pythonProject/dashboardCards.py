@@ -1,4 +1,6 @@
 import reflex as rx
+from numpy._core.defchararray import strip
+
 from pythonProject import globalVariable
 from pythonProject import models
 
@@ -13,13 +15,13 @@ class State(rx.State):
     @rx.event
     def set_habit_name(self, name: str):
         self.habit_name = name
-
+    #
     def analyze(self):
+        print("printing habit:", len(self.habit_name))
+        print("printing username:", len(globalVariable.current_username))
+
         with rx.session() as session:
-            habits = session.query(models.habitlog).filter_by(
-                habit_Name=self.habit_name,
-                username=globalVariable.current_username
-            ).all()
+            habits = session.query(models.habitlog).filter_by(habit_Name = strip(self.habit_name), username = globalVariable.current_username).all()
         print(habits)
         self.analysis_result = str(habits)
 
