@@ -34,7 +34,7 @@ class AddState(rx.State):
                     else:
                         data[k]=v
                 with rx.session() as session:
-                    db_entry = models.Habit(
+                    db_entry = models.habit(
                         **data
                     )
                     #testing time
@@ -75,13 +75,13 @@ class habitLog(rx.State):
             form_data["username"] = globalVariable.current_username
 
             with rx.session() as session:
-                logs = session.query(models.habitLog).filter_by(username=form_data["username"], date=form_data["date"], habit_Name=form_data["habit_Name"]).all()
+                logs = session.query(models.habitlog).filter_by(username=form_data["username"], date=form_data["date"], habit_Name=form_data["habit_Name"]).all()
 
             validLog = False if logs != [] else True
 
             if validLog:
                 with rx.session() as session:
-                    db_entry = models.habitLog(
+                    db_entry = models.habitlog(
                         **form_data
                     )
                     session.add(db_entry)
@@ -92,7 +92,6 @@ class habitLog(rx.State):
             elif not validLog:
                 yield rx.toast.warning("You already created a log for this date!")
 
-#bro why is there an error
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
             if "UNIQUE constraint" in str(e.orig):
@@ -103,4 +102,3 @@ class habitLog(rx.State):
                     duration=4000,
                     position="top-left"
                 )
-

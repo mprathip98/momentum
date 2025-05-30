@@ -114,6 +114,7 @@ def add() -> rx.Component:
         habitCards.addCard(),
     )
 
+@rx.page(on_load=globalVariable.TrackState.load_habits)
 def track() -> rx.Component:
     return rx.box(
         rx.color_mode.button(position="bottom-left"),

@@ -10,7 +10,6 @@ class TrackState(rx.State):
     #username: str = ""  # Populate this on login
 
     async def load_habits(self):
-        print("printing habit2", self.habits)
         from pythonProject.models import habit
         with rx.session() as session:
             results = session.query(habit).filter_by(username=current_username).all()

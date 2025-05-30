@@ -5,7 +5,6 @@ from pythonProject import models
 class HabitState(rx.State):
     loaded = False
     habits: list[str] = []
-    descriptions: list[str] = []
 
     def load_habits(self):
         self.loaded = True
