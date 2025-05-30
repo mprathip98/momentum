@@ -4,33 +4,34 @@ from pygments.lexer import combined
 
 from pythonProject import globalVariable
 from pythonProject import models
-
+from reflex.vars import Var
 
 
 import calendar
-from datetime import date
+from datetime import datetime, date
+
 
 def get_days_of_month(year: int, month: int):
     _, num_days = calendar.monthrange(year, month)
     return [date(year, month, day) for day in range(1, num_days + 1)]
 
-def calendar_view(log_data_var, year: int, month: int) -> rx.Component:
-
+def calendar_view(log_data: dict, year: int, month: int) -> rx.Component:
     days = get_days_of_month(year, month)
-    #
+
+
     return rx.grid(
         *[
             rx.box(
                 rx.text(str(day.day)),
                 bg=rx.cond(
-                    log_data_var.get(day.strftime("%Y-%m-%d"), False),
-                    "green.300",
-                    "gray.200"
+                    (day_key := day.strftime("%Y-%m-%d")) & log_data.get(day_key, False),
+                    "green",
+                    "gray",
                 ),
                 p="2",
-                border_radius="md",
+                border_radius="15px",
                 text_align="center",
-                key=day.strftime("%Y-%m-%d")
+                key=day.strftime("%Y-%m-%d"),
             )
             for day in days
         ],
@@ -38,30 +39,40 @@ def calendar_view(log_data_var, year: int, month: int) -> rx.Component:
         spacing="2",
         width="100%",
     )
-
+#OMG use the reference to help me write my code. remember i told you that the color is not showing for the day. green if that day is true and red if that day is false and gray for all of the other days
 
 class State(rx.State):
     habit_name: str = ""
-    analysis_result: dict = {}
+    analysis_result = {}
+    refresh_counter: int = 0
 
     @rx.var
     def has_habits(self) -> bool:
         return self.habit_name != ""
 
-#need to add a calendar
     @rx.event
     def set_habit_name(self, name: str):
         self.habit_name = name
 
-
     def analyze(self):
-
         habit_logs: dict = {}
         with rx.session() as session:
             habits = session.query(models.habitlog).filter_by(habit_Name = strip(self.habit_name), username = globalVariable.current_username).all()
-        for items in habits:
-            habit_logs[items.date] = items.status
+        for item in habits:
+            # Convert string to date if needed
+            if isinstance(item.date, str):
+                date_obj = datetime.strptime(item.date, "%Y-%m-%d").date()
+            else:
+                date_obj = item.date
+
+            habit_logs[date_obj.strftime("%Y-%m-%d")] = item.status
+
         self.analysis_result = habit_logs
+
+    @rx.var
+    def log_data(self) -> dict:
+        return self.analysis_result
+
 
 def eachCard(habit):
     parts = habit.split("-")
@@ -94,10 +105,12 @@ def eachCard(habit):
                     on_click=State.analyze,
                 ),
             ),
+
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}"),
                 rx.alert_dialog.description(State.analysis_result),
-                calendar_view(State.analysis_result, 2025, 5),
+                rx.text(f"Refresh count: {State.refresh_counter}"),
+                calendar_view(State.log_data, 2025, 5),
 
             ),
         ),
@@ -109,7 +122,8 @@ def eachCard(habit):
         text_align="center",
         padding="3%",
     )
-#
+
+
 
 def addCard():
     return rx.card(

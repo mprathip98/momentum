@@ -220,9 +220,7 @@ def trackCard():
                             margin="5%",
                         ),
                         margin_right="20%",
-
                     ),
-
 
 
                     rx.button(
