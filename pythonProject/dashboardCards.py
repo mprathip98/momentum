@@ -127,6 +127,7 @@ def calendar_day_item(day_info: DayRenderInfo) -> rx.Component:
         border_radius="10px",
     )
 
+
 def calendar_view():
     return rx.vstack(
         calendar_header(),
