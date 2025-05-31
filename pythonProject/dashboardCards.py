@@ -87,83 +87,59 @@ class State(rx.State):
 
 
 
-def calendarHeader(year, month):
-    print(month)
-    print(type(month))
-    monthText = calendar.month_name[month]
-    return rx.box(
-        rx.hstack(
-            rx.icon_button("arrow-left", bg="lightblue"),
-            rx.heading(
-                f"{rx.cond(State.current_month == 1, "January",
-                    rx.cond(State.current_month == 2, "February",
-                    rx.cond(State.current_month == 3, "March",
-                    rx.cond(State.current_month == 4, "April",
-                    rx.cond(State.current_month == 5, "May",
-                    rx.cond(State.current_month == 6, "June",
-                    rx.cond(State.current_month == 7, "July",
-                    rx.cond(State.current_month == 8, "August",
-                    rx.cond(State.current_month == 9, "September",
-                    rx.cond(State.current_month == 10, "October",
-                    rx.cond(State.current_month == 11, "November",
-                             "December")))))))))))}, {year}",
-                size="3",
-                margin_top="1%"),
-            rx.icon_button("arrow-right", bg="lightblue"),
-            margin_left="35%",
-            margin_bottom="3%",
+def calendar_header():
+    return rx.hstack(
+        rx.icon_button(
+            "arrow-left",
+            on_click=State.previous_month,
+            bg="lightblue",
+            size="2"
         ),
-        width="100%",
+        rx.heading(State.current_month_year_str, size="4"),
+        rx.icon_button(
+            "arrow-right",
+            on_click=State.next_month,
+            bg="lightblue",
+            size="2"
+        ),
+        justify="center",
+        spacing="4",
+        margin_bottom="1em",
     )
 
-
-
-def get_days_of_month(year: int, month: int):
-    _, num_days = calendar.monthrange(year, month)
-
-    return [date(year, month, day) for day in range(1, num_days + 1)]
-
-
-
-class currentDate():
-    month = datetime.today().month
-    year = datetime.today().year
-    #def next_month(self):
-
-
-
-def calendar_view(log_data: dict, year: int, month: int) -> rx.Component:
-    days = get_days_of_month(year, month)
-
+def calendar_day_item(day_info: DayRenderInfo) -> rx.Component:
     return rx.box(
-        calendarHeader(year, month),
-        rx.grid(
-            *[
-                rx.box(
-                    rx.text(str(day.day)),
-                    bg=rx.cond(
-                        log_data[day.strftime("%Y-%m-%d")],
-                        "green",
-                        "#141414",
-                    ),
-                    color="white",
-                    p="2",
-                    height="40px",
-                    width="60px",
-                    padding="5px",
-                    padding_top="7px",
-                    text_align="center",
-                    border_radius="10px",
-                    key=day.strftime("%Y-%m-%d"),
-                )
-                for day in days
-            ],
+        rx.text(day_info.display_day),
+        class_name=rx.cond(
+            State.log_data.contains(day_info.key),
+            rx.cond(
+                State.log_data[day_info.key],
+                "bg-green-500 text-white",
+                "bg-red-500 text-white",
+            ),
+            "bg-gray text-gray-600",
+        ),
+        width="2em",
+        height="2em",
+        display="flex",
+        align_items="center",
+        justify_content="center",
+        border_radius="10px",
+    )
 
+def calendar_view():
+    return rx.vstack(
+        calendar_header(),
+        rx.grid(
+            rx.foreach(State.calendar_days_list, calendar_day_item),
             columns="7",
-            spacing="3",
-            width="100%",
-            padding="10px",
-        )
+            gap="2",
+            spacing="2",
+        ),
+        align_items="center",
+        padding="1em",
+        border_radius="lg",
+        box_shadow="md",
     )
 
 
@@ -184,8 +160,6 @@ def eachCard(habit):
         ),
         rx.text(description, margin_top = "2%", margin_bottom = "5%"),
 
-        #on_click=rx.call(State.set_habit_name, name),
-
         rx.alert_dialog.root(
             rx.alert_dialog.trigger(
                 rx.button(
@@ -201,7 +175,8 @@ def eachCard(habit):
 
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
-                calendar_view(State.log_data, currentDate.year, currentDate.month),
+                rx.alert_dialog.description(f"So far, you have logged {State.log_data} times for this habit"),
+                calendar_view(),
             ),
         ),
         on_click=lambda: State.set_habit_name(name),
