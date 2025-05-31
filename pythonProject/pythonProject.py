@@ -37,6 +37,15 @@ def index() -> rx.Component:
                     position="center",
                     color="skyblue",
                     margin_top="12%",
+
+                    style={
+                        "position": "relative",
+                        "@keyframes opacity": {
+                            "0%": {"opacity": "0"},
+                            "100%": {"opacity": "1"},
+                        },
+                        "animation": "opacity 3s",
+                    },
                 ),
                 rx.heading(
                     "Start building good habits",
@@ -47,6 +56,14 @@ def index() -> rx.Component:
                     color="transparent",
                     padding_botton="20%",
                     height="70px",
+                    style={
+                        "position": "relative",
+                        "@keyframes opacity": {
+                            "0%": {"opacity": "0"},
+                            "100%": {"opacity": "1"},
+                        },
+                        "animation": "opacity 3s",
+                    },
                 ),
                 rx.button(
                     rx.link("Get Started", href="/signUp", color="black", underline="none"),
@@ -66,9 +83,11 @@ def index() -> rx.Component:
             justify="center",
             spacing="5",
         ),
+
         border_radius="5px",
         border_color="white",
         height="600px",
+
     )
 #-----------end home page
 
@@ -78,7 +97,7 @@ def signUp() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
-        authCards.signUpCard()
+        authCards.signUpCard(),
     )
 
 def signIn() -> rx.Component:
@@ -115,7 +134,6 @@ def dashboard() -> rx.Component:
         ),
     )
 
-
 #--------------start track pages------------------------
 def add() -> rx.Component:
     return rx.box(
@@ -131,13 +149,13 @@ def track() -> rx.Component:
         navBars.viewsNavbar(),
         habitCards.trackCard(),
     )
-#----------------end trackpages-------------------------------
+#----------------end track pages-------------------------------
 
 app = rx.App()
 #my program pages
-app.add_page(index)
-app.add_page(add, route="/add")
-app.add_page(track, route="/track")
-app.add_page(dashboard, route="/dashboard")
-app.add_page(signUp, route="/signUp")
-app.add_page(signIn, route="/login")
+app.add_page(index, title="Home")
+app.add_page(add, route="/add", title="Add Habit")
+app.add_page(track, route="/track", title="Track Habit")
+app.add_page(dashboard, route="/dashboard", title="Dashboard")
+app.add_page(signUp, route="/signUp", title="Sign Up")
+app.add_page(signIn, route="/login", title="Login")

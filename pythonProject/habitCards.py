@@ -96,9 +96,15 @@ def addCard():
         margin_left="32%",
         margin_top="5%",
         border_color="white",
-        # trying to add a shadow to a card
-        # how can i add a neon box shadow to a rx.card on a black card
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+        style={
+            "position": "relative",
+            "@keyframes opacity": {
+                "0%": {"opacity": "0"},
+                "100%": {"opacity": "1"},
+            },
+            "animation": "opacity 2s",
+        },
     ),
 
 
@@ -220,6 +226,7 @@ def trackCard():
                             margin="5%",
                         ),
                         margin_right="20%",
+
                     ),
 
 
@@ -251,5 +258,12 @@ def trackCard():
         margin_top="5%",
         border_color="white",
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-        #on_mount=globalVariable.TrackState.load_habits,
+        style={
+            "position": "relative",
+            "@keyframes opacity": {
+                "0%": {"opacity": "0"},
+                "100%": {"opacity": "1"},
+            },
+            "animation": "opacity 2s",
+        },
     ),

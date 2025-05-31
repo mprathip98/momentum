@@ -121,8 +121,14 @@ def signUpCard():
         margin="2%",
         margin_left="32%",
         border_color="white",
-        # trying to add a shadow to a card
-        # how can i add a neon box shadow to a rx.card on a black card
+        style={
+            "position": "relative",
+            "@keyframes opacity": {
+                "0%": {"opacity": "0"},
+                "100%": {"opacity": "1"},
+            },
+            "animation": "opacity 2s",
+        },
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
     ),
 
@@ -201,5 +207,13 @@ def loginCard():
         justify="center",
         margin_top="5%",
         margin_left="32%",
+        style={
+            "position": "relative",
+            "@keyframes opacity": {
+                "0%": {"opacity": "0"},
+                "100%": {"opacity": "1"},
+            },
+            "animation": "opacity 2s",
+        },
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
     ),

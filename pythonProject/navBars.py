@@ -178,5 +178,3 @@ def viewsNavbar():
         width="100%",
 
     )
-
-#alr time to record my self and the program now.
