@@ -2,6 +2,8 @@ from string import whitespace
 
 import reflex as rx
 import reflex_local_auth
+from reflex.components.radix.themes.components.icon_button import icon_button
+
 from pythonProject import models
 from pythonProject import authStates
 from pythonProject import authCards
@@ -148,12 +150,20 @@ def viewsNavbar():
                     rx.cond(
 
                         authStates.signInState.valid_username != "",
-                        rx.text(
-                            f"Welcome, {authStates.signInState.valid_name}!",
-                            whitespace="pre",
-                            color="skyblue", size="6",
-                            weight="bold",
-                            margin_right="45px"),
+                        rx.menu.root(
+                            rx.menu.trigger(
+                                rx.text(
+                                    f"Welcome, {authStates.signInState.valid_name}!",
+                                    whitespace="pre",
+                                    color="skyblue", size="6",
+                                    weight="bold",
+                                    margin_right="45px"),
+                            ),
+                            rx.menu.content(
+                                rx.menu.item("Logout", shortcut=" ⇥ ", on_click=rx.redirect("/login"), position="right"),
+                            ),
+                        ),
+
 
                     ),
                     justify="end",
@@ -168,3 +178,5 @@ def viewsNavbar():
         width="100%",
 
     )
+
+#alr time to record my self and the program now.

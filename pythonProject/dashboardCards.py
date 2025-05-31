@@ -1,17 +1,11 @@
-import reflex as rx
 from numpy._core.defchararray import strip
-from pygments.lexer import combined
-from pythonProject import globalVariable
-from pythonProject import models
-from reflex.vars import Var
-import calendar
-from datetime import datetime, date
 import reflex as rx
 import calendar
 from datetime import datetime, date
 from typing import Dict, List
 from pythonProject import models
 from pythonProject import globalVariable
+import random
 
 class DayRenderInfo(rx.Base):
     key: str
@@ -23,6 +17,21 @@ class State(rx.State):
     current_month: int = datetime.today().month
     current_year: int = datetime.today().year
     length: int = 0
+    quote: str = ""
+    cite: str = ""
+
+    @rx.event
+    async def update_quote(self):
+        quotes = [
+            "Depending on what they are, our habits will either make us or break us. We become what we repeatedly do. \n ―Sean Covey",
+            "Don't stop when you're tired, stop when you're done. \n ―David Goggins",
+            "Habit is a cable; we weave a thread each day, and at last we cannot break it. \n ―Horace Mann",
+            "Laziness is nothing more than the habit of resting before you get tired. \n -Jules Renard",
+            "Be the designer of your world and not merely the consumer of it. \n -James Clear",
+            "The chains of habit are too weak to be felt until they are too strong to be broken. \n –Samuel Johnson"]
+        quote = random.choice(quotes).split("\n")
+        self.quote = quote[0].strip()
+        self.cite = quote[1].strip()
 
     @rx.var
     def has_habits(self) -> bool:
@@ -87,6 +96,9 @@ class State(rx.State):
         self.length = len(habits)
         self.analysis_result = habit_logs
 
+    def randomQuote(self):
+        self.randomQuote = quotes[random.randint(0, 5)]
+        self.quote,self.cite = self.randomQuote.split("\n")
 
 
 def calendar_header():
@@ -94,15 +106,13 @@ def calendar_header():
         rx.icon_button(
             "arrow-left",
             on_click=State.previous_month,
-            bg="lightblue",
             size="2"
         ),
-        rx.heading(State.current_month_year_str, size="4"),
+        rx.heading(State.current_month_year_str, size="4", padding_top="5px"),
         rx.icon_button(
             "arrow-right",
             on_click=State.next_month,
-            bg="lightblue",
-            size="2"
+            size="2",
         ),
         justify="center",
         spacing="4",
@@ -129,7 +139,6 @@ def calendar_day_item(day_info: DayRenderInfo) -> rx.Component:
         border_radius="10px",
     )
 
-
 def calendar_view():
     return rx.vstack(
         calendar_header(),
@@ -144,8 +153,6 @@ def calendar_view():
         border_radius="lg",
         box_shadow="md",
     )
-
-
 
 def eachCard(habit):
     parts = habit.split("-")
@@ -168,12 +175,14 @@ def eachCard(habit):
             rx.alert_dialog.trigger(
                 rx.button(
                     "Click to Analyze",
-                    margin_top = "25%",
+                    #margin = "5%",
+                    margin_left="22%",
                     border_radius = "5px",
-                    margin_left = "20%",
+                    margin_top="25%",
+                    #
                     height="40px",
                     weight = "bold",
-                    on_click=State.analyze,
+                    on_click=lambda: [State.set_habit_name(name), State.analyze()],
                 ),
             ),
 
@@ -183,47 +192,69 @@ def eachCard(habit):
                 calendar_view(),
             ),
         ),
-        #hey so everything works on the calendar and everything but
-        on_click=lambda: State.set_habit_name(name),
+        #on_click=lambda: State.set_habit_name(name),
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
         margin="5%",
-        width="20%",
-        align="center",
+        width="65%",
+        align_items="center",
         text_align="center",
-        padding="3%",
+        padding="7%",
+
     )
 
 
 def addCard():
-    return rx.card(
-        rx.link(
-            rx.color_mode_cond(
-                light=rx.image(
-                    src="/darkPlus.png",
-                    width="50%",
-                    margin_top="13%",
-                    margin_bottom="10%",
-                    margin_left="25%"
+
+    return rx.box(
+        rx.hstack(
+            rx.card(
+                rx.link(
+                    rx.color_mode_cond(
+                        light=rx.image(
+                            src="/darkPlus.png",
+                            width="50%",
+                            margin_top="13%",
+                            margin_bottom="10%",
+                            margin_left="25%"
+
+                        ),
+                        dark=rx.image(
+                            src="/lightPlus.png",
+                            width="50%",
+                            margin_top="13%",
+                            margin_bottom="10%",
+                            margin_left="25%"
+                        )
+
+                    ),
+                    rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%",
+                            margin_bottom="5%",
+                            color=rx.color_mode_cond(light="black", dark="white")),
+
+                    href="/add"
 
                 ),
-                dark=rx.image(
-                    src="/lightPlus.png",
-                    width="50%",
-                    margin_top="13%",
-                    margin_bottom="10%",
-                    margin_left="25%"
-                )
+                class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+                margin="5%",
+                margin_left="7%",
+                width="20%",
+                align="center",
+                align_center="center",
 
             ),
-            rx.text("Add Habits", size="5", weight="bold", text_align="center", width="100%", margin_bottom="5%",
-                    color=rx.color_mode_cond(light="black", dark="white")),
+            rx.card(
 
-            href="/add"
-
+                rx.heading(State.quote),
+                rx.heading(State.cite, margin_top="2%", align="right", margin_bottom="-1%"),
+                class_name = "rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+                margin = "5%",
+                margin_right = "7%",
+                align = "center",
+                align_center = "center",
+                width="60%",
+                padding="5%"
+                #
+            )
         ),
-        class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
-        margin="5%",
-        width="20%",
-        align="center",
-        align_center="center",
-    ),
+        on_mount=State.update_quote,
+    )

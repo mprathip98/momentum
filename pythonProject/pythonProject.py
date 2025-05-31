@@ -99,9 +99,19 @@ def dashboard() -> rx.Component:
         navBars.viewsNavbar(),
         dashboardCards.addCard(),
         rx.color_mode.button(position="bottom-left"),
-        rx.cond(
-            dashboardState.HabitState.loaded,
-            rx.foreach(dashboardState.HabitState.habits, dashboardCards.eachCard),
+        rx.box(  # Wrap the habit cards in a grid
+            rx.cond(
+                dashboardState.HabitState.loaded,
+                rx.grid(
+                    rx.foreach(dashboardState.HabitState.habits, dashboardCards.eachCard),
+                    columns="3",
+                    spacing="4",
+                    width="100%",
+                    justify_items="center",
+                ),
+            ),
+            width="100%",
+            padding="2%",
         ),
     )
 

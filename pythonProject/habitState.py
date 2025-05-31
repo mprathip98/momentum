@@ -41,7 +41,7 @@ class AddState(rx.State):
                     session.add(db_entry)
                     session.commit()
                     yield rx.toast.success(title="Habit Created!",
-                                           description="You are a step closer to achieving you goal!",
+                                           description="You are a step closer to achieving your goal!",
                                            position="top-right")
                     yield rx.redirect("/track")
             elif not validHabitName:
