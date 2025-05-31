@@ -22,6 +22,7 @@ class State(rx.State):
     analysis_result = {}
     current_month: int = datetime.today().month
     current_year: int = datetime.today().year
+    length: int = 0
 
     @rx.var
     def has_habits(self) -> bool:
@@ -83,6 +84,7 @@ class State(rx.State):
         for item in habits:
             date_obj = item.date if not isinstance(item.date, str) else datetime.strptime(item.date, "%Y-%m-%d").date()
             habit_logs[date_obj.strftime("%Y-%m-%d")] = item.status
+        self.length = len(habits)
         self.analysis_result = habit_logs
 
 
@@ -144,6 +146,7 @@ def calendar_view():
     )
 
 
+
 def eachCard(habit):
     parts = habit.split("-")
     name = rx.cond(parts.length() > 0, parts[0], "")
@@ -176,10 +179,11 @@ def eachCard(habit):
 
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
-                rx.alert_dialog.description(f"So far, you have logged {State.log_data} times for this habit"),
+                rx.alert_dialog.description(f"So far, you have logged {State.length} times for this habit."),
                 calendar_view(),
             ),
         ),
+        #hey so everything works on the calendar and everything but
         on_click=lambda: State.set_habit_name(name),
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
         margin="5%",
