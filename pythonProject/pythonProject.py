@@ -50,7 +50,7 @@ def index() -> rx.Component:
                 rx.heading(
                     "Start building good habits",
                     size="9",
-                    background_image="linear-gradient(to right, #FFFFFF, #6960ff)",  # Gradient from red to green
+                    background_image=rx.color_mode_cond(dark="linear-gradient(to right, #FFFFFF, #6960ff)", light="linear-gradient(to right, #87ceeb, #6960ff)"),
                     background_clip="text",
                     font_weight="bold",
                     color="transparent",
@@ -82,7 +82,22 @@ def index() -> rx.Component:
             padding_top="200px",
             justify="center",
             spacing="5",
+            z_index="10"
         ),
+        rx.box(
+            position="absolute",
+            top="0",
+            left="0",
+            right="0",
+            bottom="0",
+            z_index="-1",  # Behind content
+            background_size="60px 60px",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            mask_repeat="no-repeat",
+            mask_size="100% 100%",
+        ),
+
 
         border_radius="5px",
         border_color="white",
@@ -98,6 +113,19 @@ def signUp() -> rx.Component:
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
         authCards.signUpCard(),
+        rx.box(
+            position="absolute",
+            top="0",
+            left="0",
+            right="0",
+            bottom="0",
+            z_index="-1",  # Behind content
+            background_size="60px 60px",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            mask_repeat="no-repeat",
+            mask_size="100% 100%",
+        ),
     )
 
 def signIn() -> rx.Component:
@@ -105,6 +133,19 @@ def signIn() -> rx.Component:
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
         authCards.loginCard(),
+        rx.box(
+            position="absolute",
+            top="0",
+            left="0",
+            right="0",
+            bottom="0",
+            z_index="-1",  # Behind content
+            background_size="60px 60px",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            mask_repeat="no-repeat",
+            mask_size="100% 100%",
+        ),
         align="center",
         width="100%",
     )
@@ -132,6 +173,19 @@ def dashboard() -> rx.Component:
             width="100%",
             padding="2%",
         ),
+        rx.box(
+            position="absolute",
+            top="0",
+            left="0",
+            right="0",
+            bottom="0",
+            z_index="-1",  # Behind content
+            background_size="60px 60px",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            mask_repeat="no-repeat",
+            mask_size="100% 100%",
+        ),
     )
 
 #--------------start track pages------------------------
@@ -151,11 +205,13 @@ def track() -> rx.Component:
     )
 #----------------end track pages-------------------------------
 
+#
+
 app = rx.App()
 #my program pages
-app.add_page(index, title="Home")
-app.add_page(add, route="/add", title="Add Habit")
-app.add_page(track, route="/track", title="Track Habit")
-app.add_page(dashboard, route="/dashboard", title="Dashboard")
-app.add_page(signUp, route="/signUp", title="Sign Up")
-app.add_page(signIn, route="/login", title="Login")
+app.add_page(index, title="Momentum")
+app.add_page(add, route="/add", title="Momentum | Add Habit")
+app.add_page(track, route="/track", title="Momentum | Track Habit")
+app.add_page(dashboard, route="/dashboard", title="Momentum | Dashboard")
+app.add_page(signUp, route="/signUp", title="Momentum | Sign Up")
+app.add_page(signIn, route="/login", title="Momentum | Login")

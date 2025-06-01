@@ -24,7 +24,7 @@ class State(rx.State):
     async def update_quote(self):
         quotes = [
             "Depending on what they are, our habits will either make us or break us. We become what we repeatedly do. \n ―Sean Covey",
-            "Don't stop when you're tired, stop when you're done. \n ―David Goggins",
+            "Don't ever stop when you're tired, stop only when you're done. \n ―David Goggins",
             "Habit is a cable; we weave a thread each day, and at last we cannot break it. \n ―Horace Mann",
             "Laziness is nothing more than the habit of resting before you get tired. \n -Jules Renard",
             "Be the designer of your world and not merely the consumer of it. \n -James Clear",
@@ -32,6 +32,7 @@ class State(rx.State):
         quote = random.choice(quotes).split("\n")
         self.quote = quote[0].strip()
         self.cite = quote[1].strip()
+
 
     @rx.var
     def has_habits(self) -> bool:
@@ -99,7 +100,7 @@ class State(rx.State):
     def randomQuote(self):
         self.randomQuote = quotes[random.randint(0, 5)]
         self.quote,self.cite = self.randomQuote.split("\n")
-
+#ddd
 
 def calendar_header():
     return rx.hstack(
