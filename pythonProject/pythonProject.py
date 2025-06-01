@@ -1,7 +1,5 @@
-from string import whitespace
-
 import reflex as rx
-from sqlalchemy.util import preload_module
+from pygments.styles.dracula import background
 
 from pythonProject import authCards
 from pythonProject import navBars
@@ -9,9 +7,7 @@ from pythonProject import animations
 from pythonProject import habitCards
 from pythonProject import globalVariable
 from pythonProject import dashboardState
-from pythonProject import models
 from pythonProject import dashboardCards
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -27,7 +23,7 @@ def index() -> rx.Component:
                 animations.spline(scene=animations.scene),
                 width="520px",
                 height="500px",
-                margin_top="-4%"
+                #margin_top="-4%"
             ),
 
             rx.vstack(
@@ -36,7 +32,7 @@ def index() -> rx.Component:
                     size="9",
                     position="center",
                     color="skyblue",
-                    margin_top="12%",
+                    #margin_top="-5%",
 
                     style={
                         "position": "relative",
@@ -54,7 +50,6 @@ def index() -> rx.Component:
                     background_clip="text",
                     font_weight="bold",
                     color="transparent",
-                    padding_botton="20%",
                     height="70px",
                     style={
                         "position": "relative",
@@ -79,11 +74,32 @@ def index() -> rx.Component:
                             font_weight="bold",
                 )
             ),
-            padding_top="200px",
+            padding_top="5%",
             justify="center",
             spacing="5",
-            z_index="10"
+            z_index="10",
+            height="120%",
+            align_items="center",
         ),
+        # rx.box(
+        #     rx.center(
+        #         rx.hstack(
+        #             rx.vstack(
+        #                 rx.heading("Track", color="black", size="8"),
+        #                 rx.text("Track your habits. Everyday. Notice the Change.", color = "black")
+        #             ),
+        #             rx.image(src="/trackImage.png")
+        #
+        #
+        #         ),
+        #     ),
+        #     background_color = "white",
+        #     padding_top="200px",
+        #     justify="center",
+        #     spacing="5",
+        #     z_index="10"
+        # ),
+
         rx.box(
             position="absolute",
             top="0",
@@ -205,7 +221,6 @@ def track() -> rx.Component:
     )
 #----------------end track pages-------------------------------
 
-#
 
 app = rx.App()
 #my program pages
