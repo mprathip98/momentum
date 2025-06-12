@@ -16,79 +16,104 @@ def signUpCard():
                             src="/momentumLogo.png",
                             alt="Reflex Logo light",
                             height="4em",
-                            margin_top="5%"),
+                            margin_top="1%"),
 
                         light=rx.image(
                             src="/momentumLogoBlack.png",
                             alt="Reflex Logo dark",
                             height="4em",
-                            margin_top="5%"),
+                            margin_top="1%"),
                     ),
 
                     rx.heading("Create an account", size="5"),
+                    rx.hstack(
+                        rx.vstack(
+                            rx.vstack(
+                                rx.text(
+                                    "name",
+                                    size="4",
+                                    text_align="left",
+                                    weight="medium",
+                                    width="100%"
+                                ),
+                                rx.input(
+                                    name="name",
+                                    required=True,
+                                    placeholder="John Doe",
+                                    type="text",
+                                    width="300px",
+                                    size="3",
+                                    margin_top="-2%"
+                                ),
+                                margin="1%",
+                            ),
+                            rx.vstack(
+                                rx.text(
+                                    "email",
+                                    size="4",
+                                    text_align="left",
+                                    weight="medium",
+                                    width="100%"
+                                ),
+                                rx.input(
+                                    type="email",
+                                    name="email",
+                                    required=True,
+                                    placeholder="bigManJohn@gmail.com",
+                                    width="300px",
+                                    size="3",
+                                    margin_top="-2%"
+                                ),
+                                margin="1%",
+                            ),
+                        ),
+                        rx.vstack(
+                            rx.vstack(
+                                rx.text(
+                                    "username",
+                                    size="4",
+                                    text_align="right",
+                                    weight="medium",
+                                    width="100%"
+                                ),
+                                rx.input(
+                                    type="text",
+                                    name="username",
+                                    required=True,
+                                    placeholder="bigManJohn",
+                                    width="300px",
+                                    size="3",
+                                    margin_top="-2%"
+                                ),
+                                margin="1%",
+                            ),
 
-                    rx.vstack(
-                        rx.text(
-                            "name",
-                            size="4",
-                            text_align="left",
-                            weight="medium",
-                            width="100%"
+                            rx.vstack(
+                                rx.text(
+                                    "password",
+                                    size="4",
+                                    required=True,
+                                    name="password",
+                                    text_align="right",
+                                    weight="medium",
+                                    width="100%"
+                                ),
+                                rx.input(
+                                    width="300px",
+                                    size="3",
+                                    margin_top="-2%",
+                                    name="password",
+                                    type="password",
+                                ),
+                                margin="1%",
+                                margin_bottom="5%",
+                            ),
                         ),
-                        rx.input(
-                            name="name",
-                            required=True,
-                            placeholder="John Doe",
-                            type="text",
-                            width="300px",
-                            size="3",
-                            margin_top="-2%"
-                        ),
-                        margin="1%",
-                    ),
-                    rx.vstack(
-                        rx.text(
-                            "username",
-                            size="4",
-                            text_align="left",
-                            weight="medium",
-                            width="100%"
-                        ),
-                        rx.input(
-                            type="text",
-                            name="username",
-                            required=True,
-                            placeholder="bigManJohn",
-                            width="300px",
-                            size="3",
-                            margin_top="-2%"
-                        ),
-                        margin="1%",
                     ),
 
-                    rx.vstack(
-                        rx.text(
-                            "password",
-                            size="4",
-                            required=True,
-                            name="password",
-                            text_align="left",
-                            weight="medium",
-                            width="100%"
-                        ),
-                        rx.input(
-                            width="300px",
-                            size="3",
-                            margin_top="-2%",
-                            name="password",
-                            type="password",
-                        ),
-                        margin="1%",
-                        margin_bottom="5%",
-                    ),
                     rx.button(
                         "Create",
-                        width="50%",
+                        width="40%",
                         size="3",
                         margin_top="3%",
                         align="center",
@@ -117,15 +142,17 @@ def signUpCard():
 
         ),
 
-        width="35%",
+        width="55%",
         align="center",
         margin="2%",
-        margin_left="32%",
+        margin_top="4%",
+        margin_left="22%",
         border_color="white",
 
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
 
     ),
+
 
 def loginCard():
     return rx.card(
@@ -200,7 +227,7 @@ def loginCard():
         ),
         width="35%",
         justify="center",
-        margin_top="5%",
+        margin_top="3%",
         margin_left="32%",
 
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",

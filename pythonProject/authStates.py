@@ -62,7 +62,7 @@ class signUpState(rx.State):
                         position="top-right"
                 )
                 #redirecting to login
-                yield rx.redirect("/login")
+                yield rx.redirect("/loginRedirection")
             elif validPassword == False:
                 yield rx.toast.error(
                     title="Password Error",

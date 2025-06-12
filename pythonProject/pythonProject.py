@@ -144,6 +144,37 @@ def signUp() -> rx.Component:
         ),
     )
 
+def loginRedirection() -> rx.Component:
+    return rx.card(
+        rx.center(
+            rx.vstack(
+                rx.text("You are now being redirected to the login page"),
+                rx.button("Continue to Login", margin_top="5%", on_click=rx.redirect("/login")),
+                align="center",
+            ),
+
+        ),
+        rx.box(
+            position="absolute",
+            top="0",
+            left="0",
+            right="0",
+            bottom="0",
+            z_index="-1",  # Behind content
+            background_size="60px 60px",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            mask_repeat="no-repeat",
+            mask_size="100% 100%",
+        ),
+        margin="15%",
+        margin_left="30%",
+        width="40%",
+        class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+
+    )
+
+
 def signIn() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
@@ -230,4 +261,5 @@ app.add_page(add, route="/add", title="Momentum | Add Habit")
 app.add_page(track, route="/track", title="Momentum | Track Habit")
 app.add_page(dashboard, route="/dashboard", title="Momentum | Dashboard")
 app.add_page(signUp, route="/signUp", title="Momentum | Sign Up")
+app.add_page(loginRedirection, route="/loginRedirection", title="Momentum | Login Redirection")
 app.add_page(signIn, route="/login", title="Momentum | Login")
