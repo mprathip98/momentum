@@ -100,7 +100,6 @@ class State(rx.State):
     def randomQuote(self):
         self.randomQuote = quotes[random.randint(0, 5)]
         self.quote,self.cite = self.randomQuote.split("\n")
-#ddd
 
 def calendar_header():
     return rx.hstack(
@@ -191,7 +190,12 @@ def eachCard(habit):
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
                 rx.alert_dialog.description(f"So far, you have logged {State.length} times for this habit."),
                 calendar_view(),
+                rx.alert_dialog.cancel(
+                    rx.button("Close", margin="1%", margin_left="43.5%"),
+                ),
+                align_items="center",
             ),
+
         ),
         #on_click=lambda: State.set_habit_name(name),
         class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
@@ -200,6 +204,7 @@ def eachCard(habit):
         align_items="center",
         text_align="center",
         padding="7%",
+
 
     )
 

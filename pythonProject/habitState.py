@@ -5,6 +5,7 @@ from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError
 from pythonProject import navBars
 from pythonProject.models import habit
+from datetime import datetime
 
 
 class State(rx.State):
@@ -65,6 +66,7 @@ class habitLog(rx.State):
 
     async def handle_submit(self, form_data: dict):
         validLog = True
+        valid_date = True
         try:
             for k, v in form_data.items():
                 if k == "status":
@@ -73,13 +75,19 @@ class habitLog(rx.State):
                     else:
                         form_data['status'] = False
             form_data["username"] = globalVariable.current_username
+            todayDate = datetime.today()
+            userDate = int(form_data['date'][:4])+int(form_data['date'][5:7])+int(form_data['date'][8:])
+            validDate = int(todayDate.strftime("%Y"))+int(todayDate.strftime("%m"))+int(todayDate.strftime("%d"))
+            if userDate > validDate or userDate < (validDate - 142):
+                valid_date = False
+
 
             with rx.session() as session:
                 logs = session.query(models.habitlog).filter_by(username=form_data["username"], date=form_data["date"], habit_Name=form_data["habit_Name"]).all()
 
             validLog = False if logs != [] else True
 
-            if validLog:
+            if validLog and valid_date:
                 with rx.session() as session:
                     db_entry = models.habitlog(
                         **form_data
@@ -90,7 +98,10 @@ class habitLog(rx.State):
                 yield rx.redirect("/dashboard")
 
             elif not validLog:
-                yield rx.toast.warning("You already created a log for this date!")
+                yield rx.toast.warning("You already created a log for this date!", position="top-left")
+
+            elif not valid_date:
+                yield rx.toast.warning("Please enter a valid date!", position="top-left")
 
         except IntegrityError as e:
             #excepts integrity errors and displays a message at the bottom right
