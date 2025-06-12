@@ -15,6 +15,10 @@ class usersignupmodel1(rx.Model, table=True):
           nullable=False,
           unique=True,
      )
+     email: str = Field(
+          sa_type=sqlalchemy.String,
+          nullable=False,
+     )
      password: str = Field(
           sa_type=sqlalchemy.String,
           nullable=False,

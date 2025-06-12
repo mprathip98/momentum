@@ -137,13 +137,14 @@ def signUp() -> rx.Component:
             bottom="0",
             z_index="-1",  # Behind content
             background_size="60px 60px",
-            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
-            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
+            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 2px), linear-gradient(to right, transparent 98%, hsl(0, 0%, 40%) 100%)",
+            mask="radial-gradient(50% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
             mask_repeat="no-repeat",
             mask_size="100% 100%",
         ),
     )
 
+#
 def loginRedirection() -> rx.Component:
     return rx.card(
         rx.center(
