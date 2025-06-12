@@ -1,12 +1,14 @@
 from sqlite3 import IntegrityError
 import reflex as rx
 from sqlalchemy.exc import IntegrityError
+from starlette.websockets import WebSocket
+
 from pythonProject import models
 from pythonProject import navBars
 from pythonProject import pythonProject
 import bcrypt
 from pythonProject import globalVariable
-from pythonProject.models import usersignupmodel1 # or wherever your sessionmaker is defined
+from pythonProject.models import usersignupmodel1
 
 
 
@@ -41,14 +43,13 @@ class signUpState(rx.State):
                 username1 = form_data["username"]
                 password1 = form_data["password"]
                 with rx.session() as session:
-                    #try to check before creating a sign up pag
+                    #try to check before creating a signup page
                     db_entry = usersignupmodel1(
                         name=name1,
                         username=username1,
                         password=password1,
                     )
 
-                    # ✅ Use your custom session
                     session.add(db_entry)
                     session.commit()
                     session.close()
@@ -79,6 +80,7 @@ class signUpState(rx.State):
 
         except Exception as e:
             #excepts integrity errors and displays a message at the bottom right
+
             print(e)
             yield rx.toast.error(
                 title="Signup Error",
@@ -88,7 +90,8 @@ class signUpState(rx.State):
                 position="top-left"
                 )
             yield
-
+            if e == WebSocket:
+                yield rx.toast.error("Check you internet connection and try again in a little while",position="top-left")
 
 class signInState(rx.State):
     in_session: bool = True
@@ -97,29 +100,33 @@ class signInState(rx.State):
     valid_name: str = ""
 
 
-
     async def sign_in(self, form_data: dict):
         global valid_username
         global valid_name
-        username = form_data.get("username", "")
-        password = form_data.get("password", "")
-        with rx.session() as session:
-            #sends a query to filter the values in the table based on username and password
-            #the "first" function fetches the first result
-            user = session.query(models.usersignupmodel1).filter_by(username=username, password=password).first()
+        try:
+            username = form_data.get("username", "")
+            password = form_data.get("password", "")
+            with rx.session() as session:
+                # sends a query to filter the values in the table based on username and password
+                # the "first" function fetches the first result
+                user = session.query(models.usersignupmodel1).filter_by(username=username, password=password).first()
 
-        if user:
-            self.valid_username=user.username
-            self.valid_name=user.name
-            globalVariable.current_username = user.username
-            self.in_session = True
-            yield rx.toast.success(
-                title="Login success", position="top-right"
-            )
-            yield rx.redirect("/dashboard")
-            #print(globalVariable.TrackState.habits if globalVariable.current_username != "" else []),
-        else:
-            self.in_session = False
-            yield rx.toast.error(
-                "Invalid username or password", position="top-left"
-            )
+            if user:
+                self.valid_username = user.username
+                self.valid_name = user.name
+                globalVariable.current_username = user.username
+                self.in_session = True
+                yield rx.toast.success(
+                    title="Login success", position="top-right"
+                )
+                yield rx.redirect("/dashboard")
+                # print(globalVariable.TrackState.habits if globalVariable.current_username != "" else []),
+            else:
+                self.in_session = False
+                yield rx.toast.error(
+                    "Invalid username or password", position="top-left"
+                )
+        except Exception as e:
+            print(e)
+            yield rx.toast.error("Check you internet connection and try again in a little while", position="top-left")
+

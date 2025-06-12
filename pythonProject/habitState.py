@@ -78,9 +78,10 @@ class habitLog(rx.State):
             todayDate = datetime.today()
             userDate = int(form_data['date'][:4])+int(form_data['date'][5:7])+int(form_data['date'][8:])
             validDate = int(todayDate.strftime("%Y"))+int(todayDate.strftime("%m"))+int(todayDate.strftime("%d"))
-            if userDate > validDate or userDate < (validDate - 142):
+            oldestDate = int(todayDate.strftime("%Y"))-100+int(todayDate.strftime("%m"))+int(todayDate.strftime("%d"))
+            
+            if userDate > validDate or userDate < oldestDate:
                 valid_date = False
-
 
             with rx.session() as session:
                 logs = session.query(models.habitlog).filter_by(username=form_data["username"], date=form_data["date"], habit_Name=form_data["habit_Name"]).all()
