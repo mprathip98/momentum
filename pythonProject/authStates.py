@@ -34,7 +34,6 @@ def send_signup_email(to_email):
     except Exception as e:
         print(f"Error sending email: {e}")
 
-
 class signUpState(rx.State):
 
     form_data :dict = {}
