@@ -1,6 +1,5 @@
 import reflex as rx
 
-
 def backgroundSetter():
     return rx.box(
             position="absolute",
