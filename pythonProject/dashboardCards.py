@@ -113,6 +113,7 @@ class State(rx.State):
                 break  # In case date replacement becomes invalid (e.g., April 31)
         return streak
 
+
 def calendar_header():
     return rx.hstack(
         rx.icon_button(
