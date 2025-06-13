@@ -1,5 +1,5 @@
 import reflex as rx
- 
+
 
 def backgroundSetter():
     return rx.box(
@@ -15,5 +15,3 @@ def backgroundSetter():
             mask_repeat="no-repeat",
             mask_size="100% 100%",
     ),
-
-#this can be called w/ background.backgroundSetter

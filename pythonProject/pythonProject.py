@@ -205,7 +205,7 @@ def track() -> rx.Component:
 
 
 app = rx.App()
-#program pages
+#all of the program pages
 app.add_page(index, title="Momentum")
 app.add_page(add, route="/add", title="Momentum | Add Habit")
 app.add_page(track, route="/track", title="Momentum | Track Habit")
