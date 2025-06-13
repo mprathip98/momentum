@@ -1,15 +1,27 @@
-from sqlite3 import IntegrityError
 import reflex as rx
-from sqlalchemy.exc import IntegrityError
 from starlette.websockets import WebSocket
-
 from pythonProject import models
-from pythonProject import navBars
-from pythonProject import pythonProject
-import bcrypt
 from pythonProject import globalVariable
 from pythonProject.models import usersignupmodel1
 
+
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+def send_email(to_email, subject, content):
+    message = Mail(
+        from_email='momentumhabitdaily@gmail.com',
+        to_emails=to_email,
+        subject=subject,
+        html_content=content
+    )
+    try:
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        response = sg.send(message)
+        print(response.status_code)
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 
 class signUpState(rx.State):
@@ -63,6 +75,7 @@ class signUpState(rx.State):
                 )
                 #redirecting to login
                 yield rx.redirect("/loginRedirection")
+                send_email(form_data["email"], "Welcome", "thanks")
             elif validPassword == False:
                 yield rx.toast.error(
                     title="Password Error",

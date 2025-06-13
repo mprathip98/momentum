@@ -8,8 +8,11 @@ from pythonProject import habitCards
 from pythonProject import globalVariable
 from pythonProject import dashboardState
 from pythonProject import dashboardCards
+from pythonProject import background
 from dotenv import load_dotenv
 load_dotenv()
+
+
 
 #------------HOME PAGE----------------
 def index() -> rx.Component:
@@ -18,7 +21,6 @@ def index() -> rx.Component:
 
         rx.color_mode.button(position="bottom-left"),
         rx.hstack(
-            #rx.heading("*blank space for the animation*"),
             rx.box(
                 animations.spline(scene=animations.scene),
                 width="520px",
@@ -81,38 +83,8 @@ def index() -> rx.Component:
             height="120%",
             align_items="center",
         ),
-        # rx.box(
-        #     rx.center(
-        #         rx.hstack(
-        #             rx.vstack(
-        #                 rx.heading("Track", color="black", size="8"),
-        #                 rx.text("Track your habits. Everyday. Notice the Change.", color = "black")
-        #             ),
-        #             rx.image(src="/trackImage.png")
-        #
-        #
-        #         ),
-        #     ),
-        #     background_color = "white",
-        #     padding_top="200px",
-        #     justify="center",
-        #     spacing="5",
-        #     z_index="10"
-        # ),
 
-        rx.box(
-            position="absolute",
-            top="0",
-            left="0",
-            right="0",
-            bottom="0",
-            z_index="-1",  # Behind content
-            background_size="60px 60px",
-            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
-            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
-            mask_repeat="no-repeat",
-            mask_size="100% 100%",
-        ),
+        background.backgroundSetter(),
 
 
         border_radius="5px",
@@ -123,28 +95,18 @@ def index() -> rx.Component:
 #-----------end home page
 
 
+
+
 #---------start Authenication pages------------------------
 def signUp() -> rx.Component:
     return rx.box(
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
         authCards.signUpCard(),
-        rx.box(
-            position="absolute",
-            top="0",
-            left="0",
-            right="0",
-            bottom="0",
-            z_index="-1",  # Behind content
-            background_size="60px 60px",
-            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 2px), linear-gradient(to right, transparent 98%, hsl(0, 0%, 40%) 100%)",
-            mask="radial-gradient(50% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
-            mask_repeat="no-repeat",
-            mask_size="100% 100%",
-        ),
+        background.backgroundSetter(),
     )
 
-#
+
 def loginRedirection() -> rx.Component:
     return rx.card(
         rx.center(
@@ -181,19 +143,7 @@ def signIn() -> rx.Component:
         navBars.navbar_plain(),
         rx.color_mode.button(position="bottom-left"),
         authCards.loginCard(),
-        rx.box(
-            position="absolute",
-            top="0",
-            left="0",
-            right="0",
-            bottom="0",
-            z_index="-1",  # Behind content
-            background_size="60px 60px",
-            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
-            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
-            mask_repeat="no-repeat",
-            mask_size="100% 100%",
-        ),
+        background.backgroundSetter(),
         align="center",
         width="100%",
     )
@@ -252,7 +202,6 @@ def track() -> rx.Component:
         habitCards.trackCard(),
     )
 #----------------end track pages-------------------------------
-
 
 
 app = rx.App()

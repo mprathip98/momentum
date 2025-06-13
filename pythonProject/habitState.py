@@ -1,9 +1,7 @@
 import reflex as rx
-from pythonProject import authCards
 from pythonProject import models
 from pythonProject import globalVariable
 from sqlalchemy.exc import IntegrityError
-from pythonProject import navBars
 from pythonProject.models import habit
 from datetime import datetime
 
