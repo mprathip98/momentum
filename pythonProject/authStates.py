@@ -3,26 +3,36 @@ from starlette.websockets import WebSocket
 from pythonProject import models
 from pythonProject import globalVariable
 from pythonProject.models import usersignupmodel1
-
-
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from dotenv import load_dotenv
+load_dotenv()
 
-def send_email(to_email, subject, content):
-    message = Mail(
-        from_email='momentumhabitdaily@gmail.com',
-        to_emails=to_email,
-        subject=subject,
-        html_content=content
-    )
+import ssl
+import urllib.request
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
+def send_signup_email(to_email):
     try:
-        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        print("API Key loaded:", os.environ.get("SENDGRID_API_KEY"))
+        message = Mail(
+            from_email='momentumhabitdaily@gmail.com',
+            to_emails=to_email,
+            subject="Welcome to Momentum!",
+            html_content="""
+                         <h1><strong>Thanks for signing up!</strong></h1> 
+                         <p>Get ready to start your journey with Momentum!</p> 
+                         <image src='/momentumLogoBlack.png'>
+                         """
+        )
+
+        sg = SendGridAPIClient("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")
         response = sg.send(message)
         print(response.status_code)
     except Exception as e:
         print(f"Error sending email: {e}")
-
 
 class signUpState(rx.State):
 
@@ -54,11 +64,13 @@ class signUpState(rx.State):
                 name1 = form_data["name"]
                 username1 = form_data["username"]
                 password1 = form_data["password"]
+                email1 = form_data["email"]
                 with rx.session() as session:
                     #try to check before creating a signup page
                     db_entry = usersignupmodel1(
                         name=name1,
                         username=username1,
+                        email=email1,
                         password=password1,
                     )
 
@@ -75,7 +87,7 @@ class signUpState(rx.State):
                 )
                 #redirecting to login
                 yield rx.redirect("/loginRedirection")
-                send_email(form_data["email"], "Welcome", "thanks")
+                send_signup_email(form_data["email"])
             elif validPassword == False:
                 yield rx.toast.error(
                     title="Password Error",
