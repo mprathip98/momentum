@@ -101,13 +101,16 @@ class State(rx.State):
         self.randomQuote = self.quotes[random.randint(0, 5)]
         self.quote,self.cite = self.randomQuote.split("\n")
 
-    def streakSetter(self):
-        print("streak")
+    @rx.var
+    def streak(self) -> int:
         streak = 0
         today = date.today()
         while self.analysis_result.get(today.strftime("%Y-%m-%d")):
             streak += 1
-            today = today.replace(day=today.day - 1)
+            try:
+                today = today.replace(day=today.day - 1)
+            except ValueError:
+                break  # In case date replacement becomes invalid (e.g., April 31)
         return streak
 
 def calendar_header():
@@ -199,8 +202,8 @@ def eachCard(habit):
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
                 rx.alert_dialog.description(f"So far, you have logged {State.length} times for this habit."),
-                rx.text(f"Current Streak: {State.streakSetter}"),
-                               #
+                rx.text(f"Current Streak: {State.streak}"),
+                #
                 calendar_view(),
                 rx.alert_dialog.cancel(
                     rx.button("Close", margin="1%", margin_left="43.5%"),
