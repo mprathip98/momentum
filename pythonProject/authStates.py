@@ -16,7 +16,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 def send_signup_email(to_email):
     try:
-        print("API Key loaded:", os.environ.get("SENDGRID_API_KEY"))
         message = Mail(
             from_email='momentumhabitdaily@gmail.com',
             to_emails=to_email,
@@ -27,12 +26,13 @@ def send_signup_email(to_email):
                          <image src='/momentumLogoBlack.png'>
                          """
         )
-
-        sg = SendGridAPIClient("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")
+        #alr i know what to do
+        sg = SendGridAPIClient("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")
         response = sg.send(message)
         print(response.status_code)
     except Exception as e:
         print(f"Error sending email: {e}")
+
 
 
 class signUpState(rx.State):
