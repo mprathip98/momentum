@@ -165,7 +165,6 @@ def calendar_view():
 
 
 
-
 def eachCard(habit):
     parts = habit.split("-")
     name = rx.cond(parts.length() > 0, parts[0], "")
