@@ -204,6 +204,7 @@ def track() -> rx.Component:
 #----------------end track pages-------------------------------
 
 
+
 app = rx.App()
 #all of the program pages
 app.add_page(index, title="Momentum")
