@@ -106,28 +106,37 @@ class State(rx.State):
     @rx.var
     def streak(self) -> int:
         streak = 0
+        today = False
         list = [x for x in self.analysis_result]
+        todaysDate = int(datetime.today().date().strftime("%Y"))*365 + int(datetime.today().date().strftime("%j"))
         streakDates = []
         for logs in list:
             date = datetime.strptime(logs, "%Y-%m-%d")
             dateNumber = int(date.strftime("%j")) +int(date.strftime("%Y"))*365
             streakDates.append(dateNumber)
         streakDates.sort()
-        today = False
         for x in range(0,len(streakDates)-1):
-            num2 = x + 1
-            check = ((streakDates[x])+1)
-            if check == streakDates[num2]:
+            if (streakDates[x]+1) == streakDates[x+1]:
                 streak += 1
                 today = True
             else:
                 streak = 0
         if today:
             streak += 1
-        if streak != 0:
-            return f"Current Streak: {str(streak)}🔥 KEEP IT GOING 🔥🔥🔥"
+        try:
+            latestLog = streakDates[-1]
+            if latestLog == today:
+                streak += 1
+        except:
+            pass
+        print(streakDates)
+        if todaysDate not in streakDates:
+            return f"You don't have a streak 😭. YET. "
+        elif streak != 0:
+            return f"Current Streak: {streak}🔥 KEEP IT GOING 🔥🔥🔥"
         else:
             return f"You don't have a streak 😭. YET. "
+
 
 def calendar_header():
     return rx.hstack(
@@ -219,9 +228,10 @@ def eachCard(habit):
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
                 rx.alert_dialog.description(f"So far, you have logged {State.length} times for this habit."),
-                rx.text(" "),
-                rx.text(" "),
+
                 rx.text(f"{State.streak}", size="4"),
+
+
                 #
                 calendar_view(),
                 rx.alert_dialog.cancel(
@@ -233,14 +243,13 @@ def eachCard(habit):
 
 
         #on_click=lambda: State.set_habit_name(name),
-        class_name="rounded-xl border-1 border-cyan-100 shadow-[0_0_15px_theme(colors.cyan.400)]",
+        class_name="rounded-xl border-1 border-cyan-100 shadow-[0_0_5px_theme(colors.cyan.400)]",
         margin="5%",
+
         width="65%",
         align_items="center",
         text_align="center",
         padding="7%",
-
-
     )
 
 
