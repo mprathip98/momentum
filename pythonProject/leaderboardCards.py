@@ -1,5 +1,25 @@
 import reflex as rx
 from pythonProject import leaderboardState
+from pythonProject import models
+
+class monthState(rx.State):
+    @rx.var
+    def retrieve(self) -> str:
+        logs = {}
+        text = ""
+
+        with rx.session() as session:
+            users = session.query(models.usersignupmodel1).all()
+
+            for user in users:
+                count = session.query(models.habitlog).filter_by(username=user.username).count()
+                logs[user.username] = count
+            print(logs)
+            for k,v in logs.items():
+                text += f"{k} -> {v}\n"
+
+        print(text)
+        return text
 
 def mainCard():
     return rx.card(
@@ -10,14 +30,14 @@ def mainCard():
                 rx.tabs.trigger("Lifetime", value = "lifetime"),
             ),
             rx.tabs.content(
-                #rx.text(f"{leaderboardState.monthState.retrieve}"),
-                rx.text(leaderboardState.monthState.retrieve),
                 value="month"
             ),
+
             rx.tabs.content(
                 value="year"
             ),
             rx.tabs.content(
+                rx.text(monthState.retrieve),
                 value="lifetime"
             )
 
