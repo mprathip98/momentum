@@ -1,3 +1,4 @@
+from numpy import sort
 from numpy._core.defchararray import strip
 import reflex as rx
 import calendar
@@ -101,18 +102,32 @@ class State(rx.State):
         self.randomQuote = self.quotes[random.randint(0, 5)]
         self.quote,self.cite = self.randomQuote.split("\n")
 
+
     @rx.var
     def streak(self) -> int:
         streak = 0
-        today = date.today()
-        while self.analysis_result.get(today.strftime("%Y-%m-%d")):
+        list = [x for x in self.analysis_result]
+        streakDates = []
+        for logs in list:
+            date = datetime.strptime(logs, "%Y-%m-%d")
+            dateNumber = int(date.strftime("%j")) +int(date.strftime("%Y"))*365
+            streakDates.append(dateNumber)
+        streakDates.sort()
+        today = False
+        for x in range(0,len(streakDates)-1):
+            num2 = x + 1
+            check = ((streakDates[x])+1)
+            if check == streakDates[num2]:
+                streak += 1
+                today = True
+            else:
+                streak = 0
+        if today:
             streak += 1
-            try:
-                today = today.replace(day=today.day - 1)
-            except ValueError:
-                break  # In case date replacement becomes invalid (e.g., April 31)
-        return streak
-
+        if streak != 0:
+            return f"Current Streak: {str(streak)}🔥 KEEP IT GOING 🔥🔥🔥"
+        else:
+            return f"You don't have a streak 😭. YET. "
 
 def calendar_header():
     return rx.hstack(
@@ -131,6 +146,7 @@ def calendar_header():
         spacing="4",
         margin_bottom="1em",
     )
+
 
 def calendar_day_item(day_info: DayRenderInfo) -> rx.Component:
     return rx.box(
@@ -203,7 +219,9 @@ def eachCard(habit):
             rx.alert_dialog.content(
                 rx.alert_dialog.title(f"Analysis for {State.habit_name}", margin_botton="10%"),
                 rx.alert_dialog.description(f"So far, you have logged {State.length} times for this habit."),
-                rx.text(f"Current Streak: {State.streak}"),
+                rx.text(" "),
+                rx.text(" "),
+                rx.text(f"{State.streak}", size="4"),
                 #
                 calendar_view(),
                 rx.alert_dialog.cancel(
@@ -212,8 +230,10 @@ def eachCard(habit):
                 align_items="center",
             ),
         ),
+
+
         #on_click=lambda: State.set_habit_name(name),
-        class_name="rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
+        class_name="rounded-xl border-1 border-cyan-100 shadow-[0_0_15px_theme(colors.cyan.400)]",
         margin="5%",
         width="65%",
         align_items="center",

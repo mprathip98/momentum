@@ -163,7 +163,7 @@ def dashboard() -> rx.Component:
                 rx.grid(
                     rx.foreach(dashboardState.HabitState.habits, dashboardCards.eachCard),
                     columns="3",
-                    spacing="4",
+                    spacing="1",
                     width="100%",
                     justify_items="center",
                 ),
