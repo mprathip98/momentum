@@ -2,7 +2,7 @@ from numpy import sort
 from numpy._core.defchararray import strip
 import reflex as rx
 import calendar
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import Dict, List
 from pythonProject import models
 from pythonProject import globalVariable
@@ -105,37 +105,37 @@ class State(rx.State):
 
     @rx.var
     def streak(self) -> int:
-        streak = 0
-        today = False
-        list = [x for x in self.analysis_result]
-        todaysDate = int(datetime.today().date().strftime("%Y"))*365 + int(datetime.today().date().strftime("%j"))
-        streakDates = []
-        for logs in list:
-            date = datetime.strptime(logs, "%Y-%m-%d")
-            dateNumber = int(date.strftime("%j")) +int(date.strftime("%Y"))*365
-            streakDates.append(dateNumber)
-        streakDates.sort()
-        for x in range(0,len(streakDates)-1):
-            if (streakDates[x]+1) == streakDates[x+1]:
-                streak += 1
-                today = True
-            else:
-                streak = 0
-        if today:
-            streak += 1
-        try:
-            latestLog = streakDates[-1]
-            if latestLog == today:
-                streak += 1
-        except:
-            pass
-        print(streakDates)
-        if todaysDate not in streakDates:
-            return f"You don't have a streak 😭. YET. "
-        elif streak != 0:
-            return f"Current Streak: {streak}🔥 KEEP IT GOING 🔥🔥🔥"
+        streak = 1
+        streakDates = sorted([
+            datetime.strptime(log, "%Y-%m-%d").date()
+            for log in self.analysis_result
+        ])
+
+        if not streakDates:
+            return "You don't have a streak 😭. YET."
+
+        streakDates = sorted(set(streakDates), reverse=True)
+        today = datetime.today().date()
+
+        # If today is not logged, streak starts from yesterday
+        if streakDates[0] != today:
+            current = streakDates[0]
         else:
-            return f"You don't have a streak 😭. YET. "
+            current = today
+
+        for i in range(1, len(streakDates)):
+            expected = current - timedelta(days=1)
+            if streakDates[i] == expected:
+                streak += 1
+                current = expected
+            else:
+                break
+
+        if today not in streakDates:
+            return "You don't have a streak 😭. YET."
+        else:
+            return f"Current Streak: {streak}🔥 KEEP IT GOING 🔥🔥🔥"
+
 
 
 def calendar_header():
