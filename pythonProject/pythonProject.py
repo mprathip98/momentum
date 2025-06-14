@@ -1,6 +1,5 @@
 import reflex as rx
 from pygments.styles.dracula import background
-
 from pythonProject import authCards
 from pythonProject import navBars
 from pythonProject import animations
@@ -8,6 +7,7 @@ from pythonProject import habitCards
 from pythonProject import globalVariable
 from pythonProject import dashboardState
 from pythonProject import dashboardCards
+from pythonProject import leaderboardCards
 from pythonProject import background
 from dotenv import load_dotenv
 load_dotenv()
@@ -95,8 +95,6 @@ def index() -> rx.Component:
 #-----------end home page
 
 
-
-
 #---------start Authenication pages------------------------
 def signUp() -> rx.Component:
     return rx.box(
@@ -105,7 +103,6 @@ def signUp() -> rx.Component:
         authCards.signUpCard(),
         background.backgroundSetter(),
     )
-
 
 def loginRedirection() -> rx.Component:
     return rx.card(
@@ -136,7 +133,6 @@ def loginRedirection() -> rx.Component:
         class_name="flex flex-col items-center justify-center space-y-4 p-8 rounded-xl border-1 border-cyan-800 shadow-[0_0_15px_theme(colors.cyan.400)]",
 
     )
-
 
 def signIn() -> rx.Component:
     return rx.box(
@@ -172,19 +168,7 @@ def dashboard() -> rx.Component:
             width="100%",
             padding="2%",
         ),
-        rx.box(
-            position="absolute",
-            top="0",
-            left="0",
-            right="0",
-            bottom="0",
-            z_index="-1",  # Behind content
-            background_size="60px 60px",
-            background_image="linear-gradient(hsl(0, 0%, 35%) 1px, transparent 1px), linear-gradient(to right, transparent 99%, hsl(0, 0%, 40%) 100%)",
-            mask="radial-gradient(45% 50% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0))",
-            mask_repeat="no-repeat",
-            mask_size="100% 100%",
-        ),
+        background.backgroundSetter(),
     )
 
 #--------------start track pages------------------------
@@ -202,6 +186,14 @@ def track() -> rx.Component:
         navBars.viewsNavbar(),
         habitCards.trackCard(),
     )
+
+def leaderboard() -> rx.Component:
+    return rx.box(
+        navBars.viewsNavbar(),
+        rx.color_mode.button(position="bottom-left"),
+        leaderboardCards.mainCard(),
+        background.backgroundSetter(),
+    )
 #----------------end track pages-------------------------------
 
 
@@ -214,3 +206,4 @@ app.add_page(dashboard, route="/dashboard", title="Momentum | Dashboard")
 app.add_page(signUp, route="/signUp", title="Momentum | Sign Up")
 app.add_page(loginRedirection, route="/loginRedirection", title="Momentum | Login Redirection")
 app.add_page(signIn, route="/login", title="Momentum | Login")
+app.add_page(leaderboard, route="/leaderboard", title="Momentum | Leaderboard")

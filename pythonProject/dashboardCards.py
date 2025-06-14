@@ -117,7 +117,6 @@ class State(rx.State):
         streakDates = sorted(set(streakDates), reverse=True)
         today = datetime.today().date()
 
-        # If today is not logged, streak starts from yesterday
         if streakDates[0] != today:
             current = streakDates[0]
         else:
@@ -130,11 +129,14 @@ class State(rx.State):
                 current = expected
             else:
                 break
-
         if today not in streakDates:
             return "You don't have a streak 😭. YET."
         else:
             return f"Current Streak: {streak}🔥 KEEP IT GOING 🔥🔥🔥"
+
+
+
+
 
 
 

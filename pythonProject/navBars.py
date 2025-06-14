@@ -134,15 +134,24 @@ def viewsNavbar():
                         weight="medium",
                         color="skyblue",
                         margin_right="25px",
-                    )
-                    ,
+                    ),
                     rx.link(
                         "Add",
                         href="/add",
                         weight="medium",
                         underline="none",
                         size="6",
-                        color="skyblue"),
+                        color="skyblue",
+                        margin_right = "25px",
+                    ),
+                    rx.link(
+                        "Leaderboard",
+                        href="/leaderboard",
+                        weight="medium",
+                        underline="none",
+                        size="6",
+                        color="skyblue"
+                    ),
                 ),
                 rx.hstack(
                     #str = rx.cond()
