@@ -9,6 +9,7 @@ from pythonProject import dashboardState
 from pythonProject import dashboardCards
 from pythonProject import leaderboardCards
 from pythonProject import background
+from pythonProject import responsiveAuthCards
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -146,6 +147,7 @@ def index() -> rx.Component:
                         font_weight="bold",
                     )
                 ),
+                
                 justify="center",
                 spacing="5",
                 z_index="10",

@@ -93,6 +93,30 @@ def navbar_plain():
             justify="between",
             align="center"
         ),
+        rx.mobile_only(
+            rx.hstack(
+                rx.link(
+                    rx.color_mode_cond(
+                        light=rx.image(
+                            src="/momentumLogo.png",
+                            alt="Reflex Logo light",
+                            height="3em",
+                        ),
+                        dark=rx.image(
+                            src="/momentumLogoBlack.png",
+                            alt="Reflex Logo dark",
+                            height="3em",
+                        ),
+                    ),
+                    underline="none",
+                    href="/"
+                ),
+
+            ),
+            justify="between",
+            align="center"
+        ),
+
         background_color=rx.color_mode_cond(light="black", dark="white"),
         padding="1em",
         #position="fixed",
@@ -201,7 +225,7 @@ def phoneView():
                     dark=rx.image(
                         src="/momentumLogoBlack.png",
                         alt="Reflex Logo dark",
-                        height="4em",
+                        height="3em",
                     ),
                 ),
             ),
@@ -226,3 +250,5 @@ def phoneView():
         position="fixed",
         width="100%",
     ),
+
+
