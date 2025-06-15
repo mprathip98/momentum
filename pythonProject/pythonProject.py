@@ -17,79 +17,152 @@ load_dotenv()
 #------------HOME PAGE----------------
 def index() -> rx.Component:
     return rx.box(
-        navBars.navbar(),
-
-        rx.color_mode.button(position="bottom-left"),
-        rx.hstack(
-            rx.box(
-                animations.spline(scene=animations.scene),
-                width="520px",
-                height="500px",
-                #margin_top="-4%"
-            ),
-
-            rx.vstack(
-                rx.heading(
-                    "Track. Analyze. Improve.",
-                    size="9",
-                    position="center",
-                    color="skyblue",
-                    #margin_top="-5%",
-
-                    style={
-                        "position": "relative",
-                        "@keyframes opacity": {
-                            "0%": {"opacity": "0"},
-                            "100%": {"opacity": "1"},
-                        },
-                        "animation": "opacity 3s",
-                    },
+        rx.desktop_only(
+            navBars.navbar(),
+            rx.color_mode.button(position="bottom-left"),
+            rx.hstack(
+                rx.box(
+                    animations.spline(scene=animations.scene),
+                    width="520px",
+                    height="500px",
+                    # margin_top="-4%"
                 ),
-                rx.heading(
-                    "Start building good habits",
-                    size="9",
-                    background_image=rx.color_mode_cond(dark="linear-gradient(to right, #FFFFFF, #6960ff)", light="linear-gradient(to right, #87ceeb, #6960ff)"),
-                    background_clip="text",
-                    font_weight="bold",
-                    color="transparent",
-                    height="70px",
-                    style={
-                        "position": "relative",
-                        "@keyframes opacity": {
-                            "0%": {"opacity": "0"},
-                            "100%": {"opacity": "1"},
+
+                rx.vstack(
+                    rx.heading(
+                        "Track. Analyze. Improve.",
+                        size="9",
+                        position="center",
+                        color="skyblue",
+                        # margin_top="-5%",
+
+                        style={
+                            "position": "relative",
+                            "@keyframes opacity": {
+                                "0%": {"opacity": "0"},
+                                "100%": {"opacity": "1"},
+                            },
+                            "animation": "opacity 3s",
                         },
-                        "animation": "opacity 3s",
-                    },
+                    ),
+                    rx.heading(
+                        "Start building good habits",
+                        size="9",
+                        background_image=rx.color_mode_cond(dark="linear-gradient(to right, #FFFFFF, #6960ff)",
+                                                            light="linear-gradient(to right, #87ceeb, #6960ff)"),
+                        background_clip="text",
+                        font_weight="bold",
+                        color="transparent",
+                        height="70px",
+                        style={
+                            "position": "relative",
+                            "@keyframes opacity": {
+                                "0%": {"opacity": "0"},
+                                "100%": {"opacity": "1"},
+                            },
+                            "animation": "opacity 3s",
+                        },
+                    ),
+                    rx.button(
+                        rx.link("Get Started", href="/signUp", color="black", underline="none"),
+                        size="4",
+                        color="black",
+                        width="150px",
+                        height="50px",
+                        bg="skyblue",
+                        margin_top="5%",
+                        margin_left="35%",
+                        border_radius="10px",
+                        background_image="linear-gradient(to right, #d8d6fa, #a4b1ff)",  # Gradient from red to green
+                        font_weight="bold",
+                    )
                 ),
-                rx.button(
-                    rx.link("Get Started", href="/signUp", color="black", underline="none"),
-                            size="4",
-                            color="black",
-                            width="150px",
-                            height="50px",
-                            bg="skyblue",
-                            margin_top="5%",
-                            margin_left="35%",
-                            border_radius="10px",
-                            background_image="linear-gradient(to right, #d8d6fa, #a4b1ff)",  # Gradient from red to green
-                            font_weight="bold",
-                )
+                padding_top="5%",
+                justify="center",
+                spacing="5",
+                z_index="10",
+                height="120%",
+                align_items="center",
             ),
-            padding_top="5%",
-            justify="center",
-            spacing="5",
-            z_index="10",
-            height="120%",
-            align_items="center",
+            background.backgroundSetter(),
+            border_radius="5px",
+            border_color="white",
+            height="600px",
         ),
 
-        background.backgroundSetter(),
 
+        rx.mobile_only(
+            navBars.navbar(),
+            rx.color_mode.button(position="bottom-left"),
+            rx.hstack(
+                rx.box(
+                    animations.spline(scene=animations.scene),
+                    width="520px",
+                    height="500px",
+                    # margin_top="-4%"
+                ),
 
-        border_radius="5px",
-        border_color="white",
-        height="600px",
+                rx.vstack(
+                    rx.heading(
+                        "Track. Analyze. Improve.",
+                        size="9",
+                        position="center",
+                        color="skyblue",
+                        # margin_top="-5%",
+
+                        style={
+                            "position": "relative",
+                            "@keyframes opacity": {
+                                "0%": {"opacity": "0"},
+                                "100%": {"opacity": "1"},
+                            },
+                            "animation": "opacity 3s",
+                        },
+                    ),
+                    rx.heading(
+                        "Start building good habits",
+                        size="9",
+                        background_image=rx.color_mode_cond(dark="linear-gradient(to right, #FFFFFF, #6960ff)",
+                                                            light="linear-gradient(to right, #87ceeb, #6960ff)"),
+                        background_clip="text",
+                        font_weight="bold",
+                        color="transparent",
+                        height="70px",
+                        style={
+                            "position": "relative",
+                            "@keyframes opacity": {
+                                "0%": {"opacity": "0"},
+                                "100%": {"opacity": "1"},
+                            },
+                            "animation": "opacity 3s",
+                        },
+                    ),
+                    rx.button(
+                        rx.link("Get Started", href="/signUp", color="black", underline="none"),
+                        size="4",
+                        color="black",
+                        width="150px",
+                        height="50px",
+                        bg="skyblue",
+                        margin_top="5%",
+                        margin_left="35%",
+                        border_radius="10px",
+                        background_image="linear-gradient(to right, #d8d6fa, #a4b1ff)",  # Gradient from red to green
+                        font_weight="bold",
+                    )
+                ),
+                padding_top="5%",
+                justify="center",
+                spacing="5",
+                z_index="10",
+                height="120%",
+                align_items="center",
+            ),
+            background.backgroundSetter(),
+            border_radius="5px",
+            border_color="white",
+            height="600px",
+        ),
 
     )
 #-----------end home page

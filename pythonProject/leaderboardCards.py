@@ -20,6 +20,15 @@ class lifetimeState(rx.State):
                 count = session.query(models.habitlog).filter_by(username=user.username).count()
                 logs[user.username] = count
             finalLogs = {k: v for k, v in sorted(logs.items(), key=lambda item: item[1], reverse=True)}
+
+            #adding color to the first three places
+            first_key = list(finalLogs.keys())[0]
+            finalLogs[first_key + "🥇"] = finalLogs.pop(first_key)
+            finalLogs = {k: v for k, v in sorted(finalLogs.items(), key=lambda item: item[1], reverse=True)}
+
+            second_key = list(finalLogs.keys())[1]
+            finalLogs[second_key + ("🥈")] = finalLogs.pop(second_key)
+            finalLogs = {k: v for k, v in sorted(finalLogs.items(), key=lambda item: item[1], reverse=True)}
         return finalLogs
 
 class yearState(rx.State):
@@ -40,12 +49,11 @@ class yearState(rx.State):
             #adding color to the first three places
             first_key = list(finalYearLogs.keys())[0]
             finalYearLogs[first_key + "🥇"] = finalYearLogs.pop(first_key)
+            finalYearLogs = {k: v for k, v in sorted(finalYearLogs.items(), key=lambda item: item[1], reverse=True)}
 
             second_key = list(finalYearLogs.keys())[1]
-            finalYearLogs[second_key + ""] = finalYearLogs.pop(second_key)
-
-            third_key = list(finalYearLogs.keys())[2]
-            finalYearLogs[third_key + ""] = finalYearLogs.pop(third_key)
+            finalYearLogs[second_key + ("🥈")] = finalYearLogs.pop(second_key)
+            finalYearLogs = {k: v for k, v in sorted(finalYearLogs.items(), key=lambda item: item[1], reverse=True)}
 
         return finalYearLogs
 
@@ -63,11 +71,14 @@ class monthState(rx.State):
                 ).count()
                 monthLogs[user.username] = monthCount
             finalMonthLogs = {k: v for k, v in sorted(monthLogs.items(), key=lambda item: item[1], reverse=True)}
-        print(type(finalMonthLogs))
+            first_key = list(finalMonthLogs.keys())[0]
+            finalMonthLogs[first_key + "🥇"] = finalMonthLogs.pop(first_key)
+            finalMonthLogs = {k: v for k, v in sorted(finalMonthLogs.items(), key=lambda item: item[1], reverse=True)}
+
+            second_key = list(finalMonthLogs.keys())[1]
+            finalMonthLogs[second_key + ("🥈")] = finalMonthLogs.pop(second_key)
+            finalMonthLogs = {k: v for k, v in sorted(finalMonthLogs.items(), key=lambda item: item[1], reverse=True)}
         return finalMonthLogs
-
-
-
 
 def render_habit(item: dict[str, int]):
     return rx.card(
@@ -97,7 +108,7 @@ def mainCard():
 
             ),
             rx.tabs.content(
-                rx.text("YEARLY LEADERBOARD", weight="bold", size="4", width="100%", text_align="center",
+                rx.text("MONTHLY LEADERBOARD", weight="bold", size="4", width="100%", text_align="center",
                         margin_top="2%"),
                 rx.hstack(
                     rx.card("username", margin_left="5%", margin_top="2%"),
@@ -108,7 +119,7 @@ def mainCard():
             ),
 
             rx.tabs.content(
-                rx.text("MONTLY LEADERBOARD", weight="bold", size="4", width="100%", text_align="center",
+                rx.text("YEARLY LEADERBOARD", weight="bold", size="4", width="100%", text_align="center",
                         margin_top="2%"),
                 rx.hstack(
                     rx.card("username", margin_left="5%", margin_top="2%"),
