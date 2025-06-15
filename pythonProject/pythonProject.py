@@ -192,7 +192,7 @@ def leaderboard() -> rx.Component:
         navBars.viewsNavbar(),
         rx.color_mode.button(position="bottom-left"),
         leaderboardCards.mainCard(),
-        background.backgroundSetter(),
+        background.backgroundSetterStronger(),
     )
 #----------------end track pages-------------------------------
 
