@@ -92,23 +92,17 @@ def index() -> rx.Component:
 
 
         rx.mobile_only(
-            navBars.navbar(),
+            navBars.phoneView(),
             rx.color_mode.button(position="bottom-left"),
-            rx.hstack(
-                rx.box(
-                    animations.spline(scene=animations.scene),
-                    width="520px",
-                    height="500px",
-                    # margin_top="-4%"
-                ),
-
+            rx.vstack(
                 rx.vstack(
                     rx.heading(
                         "Track. Analyze. Improve.",
-                        size="9",
+                        size="7",
                         position="center",
                         color="skyblue",
-                        # margin_top="-5%",
+                        text_align="center",
+                        margin_left="2%",
 
                         style={
                             "position": "relative",
@@ -121,13 +115,14 @@ def index() -> rx.Component:
                     ),
                     rx.heading(
                         "Start building good habits",
-                        size="9",
+                        size="7",
                         background_image=rx.color_mode_cond(dark="linear-gradient(to right, #FFFFFF, #6960ff)",
                                                             light="linear-gradient(to right, #87ceeb, #6960ff)"),
                         background_clip="text",
                         font_weight="bold",
                         color="transparent",
                         height="70px",
+                        text_align="center",
                         style={
                             "position": "relative",
                             "@keyframes opacity": {
@@ -145,13 +140,12 @@ def index() -> rx.Component:
                         height="50px",
                         bg="skyblue",
                         margin_top="5%",
-                        margin_left="35%",
+                        margin_left="27%",
                         border_radius="10px",
                         background_image="linear-gradient(to right, #d8d6fa, #a4b1ff)",  # Gradient from red to green
                         font_weight="bold",
                     )
                 ),
-                padding_top="5%",
                 justify="center",
                 spacing="5",
                 z_index="10",

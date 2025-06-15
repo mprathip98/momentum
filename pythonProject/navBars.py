@@ -189,34 +189,40 @@ def viewsNavbar():
     )
 
 def phoneView():
-    rx.hstack(
+    return rx.box(
         rx.hstack(
-            rx.color_mode_cond(
-                light=rx.image(
-                    src="/momentumLogo.png",
-                    alt="Reflex Logo light",
-                    height="4em",
-                ),
-                dark=rx.image(
-                    src="/momentumLogoBlack.png",
-                    alt="Reflex Logo dark",
-                    height="4em",
+            rx.hstack(
+                rx.color_mode_cond(
+                    light=rx.image(
+                        src="/momentumLogo.png",
+                        alt="Reflex Logo light",
+                        height="4em",
+                    ),
+                    dark=rx.image(
+                        src="/momentumLogoBlack.png",
+                        alt="Reflex Logo dark",
+                        height="4em",
+                    ),
                 ),
             ),
+            rx.menu.root(
+                rx.menu.trigger(rx.icon("menu", color=rx.color_mode_cond(light="white", dark="black"))),
+                rx.menu.content(
+                    rx.menu.item(
+                        "Sign Up",
+                        on_click=rx.redirect("/signUp"),
+                    ),
+                    rx.menu.item(
+                        "Login",
+                        on_click=rx.redirect("/login"),
+                    ),
+                )
+            ),
+            justify="between",
+            align="center"
         ),
-        rx.menu.root(
-            rx.menu.trigger(rx.icon("menu")),
-            rx.menu.content(
-                rx.menu.item(
-                    "Sign Up",
-                    on_click = rx.redirect("/signUp"),
-                ),
-                rx.menu.item(
-                    "Login",
-                    on_click = rx.redirect("/login"),
-                ),
-            )
-        ),
-        justify="between",
-        align="center"
+        background_color=rx.color_mode_cond(light="black", dark="white"),
+        padding="1em",
+        position="fixed",
+        width="100%",
     ),
